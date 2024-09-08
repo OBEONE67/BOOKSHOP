@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookShop</title>
+</head>
+<style>
+  /* รีเซ็ตค่าเบื้องต้น */
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+  }
+
+  /* ส่วนหัว (Header) */
+  header {
+      background-color: #f4f4f4;
+      padding: 15px 0;
+      border-bottom: 1px solid #ddd;
+  }
+
+  .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+
+  .logo h1 {
+      margin: 0;
+      color: #333;
+  }
+
+  .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+  }
+
+  .navbar ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+  }
+
+  .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+  }
+
+  .header-right input {
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+  }
+
+  .header-right button {
+      padding: 5px 15px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+
+  .cart-icon {
+      font-size: 24px;
+      color: #333;
+      text-decoration: none;
+  }
+
+  /* แบนเนอร์หลัก (Main Banner) */
+  .main-banner {
+      background: url('banner.jpg') no-repeat center center/cover;
+      color: #fff;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+  }
+
+  .banner-content {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 10px;
+  }
+
+  .main-banner h2 {
+      font-size: 36px;
+      margin-bottom: 10px;
+  }
+
+  .main-banner p {
+      font-size: 18px;
+  }
+
+  .main-banner .btn {
+      padding: 10px 20px;
+      background-color: #ff6600;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+  }
+
+  /* หมวดหมู่หนังสือ (Book Categories) */
+  .categories {
+      padding: 50px 0;
+      background-color: #fafafa;
+      text-align: center;
+  }
+
+  .categories h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+  }
+
+  .category-list {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+  }
+
+  .category-item {
+      background-color: #fff;
+      padding: 15px 30px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+  }
+
+  .category-item:hover {
+      background-color: #ff6600;
+      color: #fff;
+  }
+
+  /* หนังสือแนะนำ (Recommended Books) */
+  .recommended-books {
+      padding: 50px 0;
+      text-align: center;
+  }
+
+  .recommended-books h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+  }
+
+  .book-list {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+  }
+
+  .book-item {
+      background-color: #fff;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      width: 200px;
+      text-align: center;
+  }
+
+  .book-item img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+  }
+
+  .book-item h3 {
+      font-size: 18px;
+      margin: 10px 0;
+  }
+
+  .book-item p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+  }
+
+  .book-item button {
+      padding: 8px 15px;
+      background-color: #ff6600;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+
+  /* ส่วนท้าย (Footer) */
+  footer {
+      background-color: #333;
+      color: #fff;
+      padding: 30px 0;
+      text-align: center;
+  }
+
+  .footer-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+  }
+
+  .footer-info,
+  .footer-links,
+  .footer-social {
+      flex: 1;
+      min-width: 200px;
+  }
+
+  .footer-links a,
+  .footer-social a {
+      color: #ff6600;
+      text-decoration: none;
+      display: block;
+      margin: 5px 0;
+  }
+</style>
+<body>
+    <!-- ส่วนหัว (Header) -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Bookshop</h1>
+            </div>
+            <nav class="navbar">
+                <ul>
+                    <li><a href="#">หน้าแรก</a></li>
+                    <li><a href="#">หมวดหมู่หนังสือ</a></li>
+                    <li><a href="#">สินค้าแนะนำ</a></li>
+                    <li><a href="#">โปรโมชั่น</a></li>
+                    <li><a href="#">เกี่ยวกับเรา</a></li>
+                    <li><a href="#">ติดต่อเรา</a></li>
+                </ul>
+            </nav>
+            <div class="header-right">
+                <input type="text" placeholder="ค้นหาหนังสือ...">
+                <button>เข้าสู่ระบบ</button>
+                <a href="#" class="cart-icon">🛒</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- แบนเนอร์หลัก (Main Banner) -->
+    <section class="main-banner">
+        <div class="banner-content">
+            <h2>โปรโมชั่นพิเศษสำหรับคุณ!</h2>
+            <p>รับส่วนลดสูงสุด 50% สำหรับหนังสือที่ร่วมรายการ</p>
+            <a href="#" class="btn">ดูรายละเอียดเพิ่มเติม</a>
+        </div>
+    </section>
+
+    <!-- หมวดหมู่หนังสือ (Book Categories) -->
+    <section class="categories">
+        <h2>หมวดหมู่หนังสือ</h2>
+        <div class="category-list">
+            <div class="category-item">นิยาย</div>
+            <div class="category-item">การ์ตูน</div>
+            <div class="category-item">การเรียนรู้</div>
+            <div class="category-item">ประวัติศาสตร์</div>
+            <div class="category-item">วรรณกรรม</div>
+        </div>
+    </section>
+
+    <!-- หนังสือแนะนำ (Recommended Books) -->
+    <section class="recommended-books">
+        <h2>หนังสือแนะนำ</h2>
+        <div class="book-list">
+            <div class="book-item">
+                <img src="book1.jpg" alt="Book 1">
+                <h3>ชื่อหนังสือ 1</h3>
+                <p>รายละเอียดเกี่ยวกับหนังสือ...</p>
+                <button>เพิ่มลงในตะกร้า</button>
+            </div>
+            <div class="book-item">
+                <img src="book2.jpg" alt="Book 2">
+                <h3>ชื่อหนังสือ 2</h3>
+                <p>รายละเอียดเกี่ยวกับหนังสือ...</p>
+                <button>เพิ่มลงในตะกร้า</button>
+            </div>
+            <!-- สามารถเพิ่มหนังสือได้อีกตามต้องการ -->
+        </div>
+    </section>
+
+    <!-- ส่วนท้าย (Footer) -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-info">
+                <h3>Bookshop</h3>
+                <p>ที่อยู่ของร้านหนังสือ</p>
+                <p>เบอร์โทร: 012-345-6789</p>
+                <p>อีเมล: info@bookshop.com</p>
+            </div>
+            <div class="footer-links">
+                <a href="#">นโยบายการคืนสินค้า</a>
+                <a href="#">นโยบายความเป็นส่วนตัว</a>
+                <a href="#">เงื่อนไขการใช้บริการ</a>
+            </div>
+            <div class="footer-social">
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">Twitter</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
