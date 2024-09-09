@@ -1,266 +1,135 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ร้านหนังสือนิยาย</title>
-    <style>
-        /* ทั่วไป */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #333;
-            line-height: 1.6;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookShop</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
 
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+    /* รีเซ็ตค่าเบื้องต้น */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Itim", cursive;
+        font-weight: 500;
+        font-style: normal;
+    }
 
-        /* ส่วนหัว */
-        header {
-            background-color: #222;
-            color: #fff;
-            padding: 20px 0;
-        }
+    /* ส่วนหัว (Header) */
+    header {
+        background-color: #f4f4f4;
+        padding: 20px 0;
+        border-bottom: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
 
-        header h1 {
-            margin: 0;
-            text-align: center;
-            font-size: 2em;
-        }
+    .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-        nav ul {
-            list-style: none;
-            padding: 0;
-            text-align: center;
-            margin: 10px 0 0;
-        }
+    .logo img {
+        max-width: 165px;
+        height: auto;
+    }
 
-        nav ul li {
-            display: inline;
-            margin: 0 15px;
-        }
+    .navbar ul {
+        list-style: none;
+        display: flex;
+        gap: 25px;
+    }
 
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
+    .navbar ul li a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+    }
 
-        nav ul li a:hover {
-            text-decoration: underline;
-        }
+    .navbar ul li a:hover {
+        background-color: #ff6600;
+        color: #fff;
+    }
 
-        /* ส่วนโฮม */
-        .hero {
-            background: url('hero-bg.jpg') no-repeat center center/cover;
-            color: #fff;
-            padding: 100px 0;
-            text-align: center;
-        }
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
 
-        .hero h2 {
-            font-size: 2.5em;
-            margin: 0;
-        }
+    .header-right input {
+        padding: 7px 10px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        width: 150px;
+        transition: border-color 0.3s;
+    }
 
-        .hero p {
-            font-size: 1.2em;
-            margin: 20px 0;
-        }
+    .header-right input:focus {
+        border-color: #ff6600;
+    }
 
-        .hero .btn {
-            background-color: #e63946;
-            color: #fff;
-            padding: 15px 30px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 1.1em;
-        }
+    .header-right button {
+        padding: 7px 20px;
+        background-color: #ff6600;
+        color: #fff;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
 
-        .hero .btn:hover {
-            background-color: #d62839;
-        }
+    .header-right button:hover {
+        background-color: #e65c00;
+    }
 
-        /* หมวดหมู่ */
-        .categories {
-            padding: 50px 0;
-            background-color: #f1f1f1;
-        }
+    .cart-icon {
+        font-size: 24px;
+        color: #333;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
 
-        .categories h2 {
-            text-align: center;
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
+    .cart-icon:hover {
+        color: #ff6600;
+    }
 
-        .category {
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .category h3 {
-            font-size: 1.8em;
-            margin: 10px 0;
-        }
-
-        .category p {
-            font-size: 1.1em;
-            margin: 10px 0;
-        }
-
-        .category .btn {
-            background-color: #457b9d;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 1em;
-        }
-
-        .category .btn:hover {
-            background-color: #1d3557;
-        }
-
-        /* เกี่ยวกับเรา */
-        .about {
-            padding: 50px 0;
-        }
-
-        .about p {
-            font-size: 1.1em;
-            text-align: center;
-        }
-
-        /* ติดต่อเรา */
-        .contact {
-            background-color: #f1f1f1;
-            padding: 50px 0;
-        }
-
-        .contact h2 {
-            text-align: center;
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-
-        form {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        form label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-
-        form input, form textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        form button {
-            background-color: #2a9d8f;
-            color: #fff;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1em;
-            cursor: pointer;
-        }
-
-        form button:hover {
-            background-color: #264653;
-        }
-
-        /* ส่วนท้าย */
-        footer {
-            background-color: #222;
-            color: #fff;
-            text-align: center;
-            padding: 15px 0;
-            font-size: 0.9em;
-        }
-    </style>
+  </style>
 </head>
 <body>
+    <!-- ส่วนหัว (Header) -->
     <header>
         <div class="container">
-            <h1>ร้านหนังสือนิยาย</h1>
-            <nav>
+            <div class="logo">
+                <a href="/"><img src="https://img5.pic.in.th/file/secure-sv1/BookstoreLogo.png" alt="BookstoreLogo"></a>
+            </div>
+            <nav class="navbar">
                 <ul>
                     <li><a href="/">หน้าแรก</a></li>
-                    <li><a href="#categories">หมวดหมู่</a></li>
-                    <li><a href="#about">เกี่ยวกับเรา</a></li>
-                    <li><a href="#contact">ติดต่อเรา</a></li>
+                    <li><a href="#">หมวดหมู่หนังสือ</a></li>
+                    <li><a href="#">สินค้าแนะนำ</a></li>
+                    <li><a href="#">โปรโมชั่น</a></li>
+                    <li><a href="#">เกี่ยวกับเรา</a></li>
+                    <li><a href="#">ติดต่อเรา</a></li>
                 </ul>
             </nav>
+            <div class="header-right">
+                <input type="text" placeholder="ค้นหาหนังสือ...">
+                <button><a href="/login" class="btn">เข้าสู่ระบบ</a></button>
+                <a href="#" class="cart-icon">🛒</a>
+            </div>
         </div>
     </header>
-
-    <section id="home" class="hero">
-        <div class="container">
-            <h2>ยินดีต้อนรับสู่ร้านหนังสือนิยายของเรา</h2>
-            <p>ค้นหานิยายที่คุณรักจากหมวดหมู่ต่างๆ หรือรับข้อเสนอพิเศษ!</p>
-            <a href="#categories" class="btn">ดูหนังสือ</a>
-        </div>
-    </section>
-
-    <section id="categories" class="categories">
-        <div class="container">
-            <h2>หมวดหมู่หนังสือ</h2>
-            <div class="category">
-                <h3>นิยายโรแมนติก</h3>
-                <p>ค้นหานิยายโรแมนติกที่คุณชื่นชอบ</p>
-                <a href="#" class="btn">ดูเพิ่มเติม</a>
-            </div>
-            <div class="category">
-                <h3>นิยายแฟนตาซี</h3>
-                <p>เข้าสู่โลกแฟนตาซีที่น่าตื่นเต้น</p>
-                <a href="#" class="btn">ดูเพิ่มเติม</a>
-            </div>
-            <div class="category">
-                <h3>นิยายลึกลับ</h3>
-                <p>ไขปริศนาลึกลับในนิยายของเรา</p>
-                <a href="#" class="btn">ดูเพิ่มเติม</a>
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="about">
-        <div class="container">
-            <h2>เกี่ยวกับเรา</h2>
-            <p>เราคือร้านหนังสือที่ทุ่มเทในการนำเสนอหนังสือนิยายที่หลากหลายและคุณภาพสูง. ทีมงานของเรามีความเชี่ยวชาญในการคัดสรรหนังสือที่น่าสนใจสำหรับคุณ.</p>
-        </div>
-    </section>
-
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2>ติดต่อเรา</h2>
-            <form action="submit_form.php" method="post">
-                <label for="name">ชื่อ:</label>
-                <input type="text" id="name" name="name" required>
-                <label for="email">อีเมล:</label>
-                <input type="email" id="email" name="email" required>
-                <label for="message">ข้อความ:</label>
-                <textarea id="message" name="message" required></textarea>
-                <button type="submit">ส่งข้อความ</button>
-            </form>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 ร้านหนังสือนิยาย. สงวนลิขสิทธิ์.</p>
-        </div>
-    </footer>
 </body>
 </html>
