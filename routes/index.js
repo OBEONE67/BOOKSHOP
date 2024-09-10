@@ -16,6 +16,11 @@ router.get('/BOOKTYPE1', function(req, res, next) {
   res.render('BOOKTYPE1', { title: 'Express' });
 });
 
+/* GET register page. */
+router.get('/register', function(req, res, next) {
+  res.render('register', { title: 'register' });
+});
+
 
 
 module.exports = router;
