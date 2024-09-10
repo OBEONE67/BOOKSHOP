@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - BookShop</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+    
+    body {
+      font-family: "Itim", cursive;
+      font-weight: 400;
+      font-style: normal;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .register-container {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      max-width: 90%;
+    }
+
+    .register-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      font-family: "Itim", cursive;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      background-color: #ff6600;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+      font-family: "Itim", cursive;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    .btn:hover {
+      background-color: #e65c00;
+    }
+
+    .links {
+      margin-top: 15px;
+      font-family: "Itim", cursive;
+      font-weight: 400;
+      font-style: normal;
+      text-align: center;
+    }
+
+    .links a {
+      color: #ff6600;
+      text-decoration: none;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h2>สมัครสมาชิก</h2>
+    <form action="/register" method="POST">
+      <div class="form-group">
+        <label for="username">ชื่อผู้ใช้</label>
+        <input type="text" id="username" name="username" placeholder="กรอกชื่อผู้ใช้ของคุณ" required>
+      </div>
+      <div class="form-group">
+        <label for="password">รหัสผ่าน</label>
+        <input type="password" id="password" name="password" placeholder="กรอกรหัสผ่านของคุณ" required>
+      </div>
+      <div class="form-group">
+        <label for="email">อีเมล</label>
+        <input type="email" id="email" name="email" placeholder="กรอกอีเมลของคุณ" required>
+      </div>
+      <button type="submit" class="btn">สมัครสมาชิก</button>
+      <div class="links">
+        <a href="/login">มีบัญชีอยู่แล้ว? เข้าสู่ระบบ</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
