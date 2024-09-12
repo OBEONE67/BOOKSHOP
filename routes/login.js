@@ -19,7 +19,19 @@ router.post('/', (req, res) => {
     }
 
     if (results.length > 0) {
-      res.send('Login successful!');
+      // Save user information in session
+      var user = results[0];
+      req.session.user = {
+        username: user.username,
+        role: user.username === 'admin' ? 'admin' : 'user' // Set role based on username
+      };
+
+      // Redirect based on user role
+      if (req.session.user.role === 'admin') {
+        res.redirect('/useradmin');
+      } else {
+        res.redirect('/');
+      }
     } else {
       res.status(401).send('Invalid email or password.');
     }
