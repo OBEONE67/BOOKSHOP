@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UserAdmin</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+    </style>
+    <style>
+
+        * {
+            font-family: "Itim", cursive;
+            font-weight: 500;
+            font-style: normal;
+        }
+        /* styles.css */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #444;
+            border-bottom: 2px solid #f7f7f7;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"] {
+            background-color: #28a745;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        button.delete {
+            background-color: #dc3545;
+            padding: 8px 12px;
+        }
+
+        button.delete:hover {
+            background-color: #c82333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        li button.delete {
+            font-size: 14px;
+            padding: 5px 10px;
+        }
+
+        /* ปุ่ม Logout */
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #e65c00   ;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #ff6600;
+        }
+    </style>
+</head>
+<body>
+    <a href="/"><button class="logout-button">Logout</button></a>
+    <h1>Product Management</h1>
+    <div class="container">
+        <form id="addProductForm">
+            <h2>Add New Product</h2>
+            <label for="productName">Product Name:</label>
+            <input type="text" id="productName" required>
+            <label for="productPrice">Product Price:</label>
+            <input type="number" id="productPrice" required>
+            <button type="submit">Add Product</button>
+        </form>
+        
+        <h2>Product List</h2>
+        <ul id="productList">
+            <!-- Products will be listed here -->
+        </ul>
+    </div>
+    <!-- <script>
+        // scripts.js
+        document.addEventListener('DOMContentLoaded', function() {
+            const addProductForm = document.getElementById('addProductForm');
+            const productList = document.getElementById('productList');
+
+            addProductForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const productName = document.getElementById('productName').value;
+                const productPrice = document.getElementById('productPrice').value;
+
+                if (productName && productPrice) {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        ${productName} - $${productPrice} 
+                        <button class="delete">Delete</button>
+                    `;
+                    productList.appendChild(listItem);
+
+                    // Clear form inputs
+                    addProductForm.reset();
+                }
+            });
+
+            productList.addEventListener('click', function(event) {
+                if (event.target && event.target.matches('button.delete')) {
+                    const listItem = event.target.parentElement;
+                    productList.removeChild(listItem);
+                }
+            });
+        });
+    </script> -->
+</body>
+</html>
