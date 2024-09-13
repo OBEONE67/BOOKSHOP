@@ -137,52 +137,37 @@
     <a href="/logout"><button class="logout-button">Logout</button></a>
     <h1>Product Management</h1>
     <div class="container">
-        <form id="addProductForm">
-            <h2>Add New Product</h2>
-            <label for="productName">Product Name:</label>
-            <input type="text" id="productName" required>
-            <label for="productPrice">Product Price:</label>
-            <input type="number" id="productPrice" required>
-            <button type="submit">Add Product</button>
+        <form id="addProductForm" action="/useradmin" method="post">
+            <label for="bookName">Book Name:</label>
+            <input type="text" id="bookName" name="bookName" required>
+            
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+            
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" required>
+            
+            <label for="publisher">Publisher:</label>
+            <input type="text" id="publisher" name="publisher">
+            
+            <label for="photo">Photo URL:</label>
+            <input type="text" id="photo" name="photo">
+            
+            <label for="categoryName">Category Name:</label>
+            <input type="text" id="categoryName" name="categoryName">
+            
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" step="0.01" required>
+            
+            <label for="stock">Stock:</label>
+            <input type="number" id="stock" name="stock" required>
+            
+            <button type="submit">Add Book</button>
         </form>
         
         <h2>Product List</h2>
         <ul id="productList">
-            <!-- Products will be listed here -->
         </ul>
     </div>
-    <!-- <script>
-        // scripts.js
-        document.addEventListener('DOMContentLoaded', function() {
-            const addProductForm = document.getElementById('addProductForm');
-            const productList = document.getElementById('productList');
-
-            addProductForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-
-                const productName = document.getElementById('productName').value;
-                const productPrice = document.getElementById('productPrice').value;
-
-                if (productName && productPrice) {
-                    const listItem = document.createElement('li');
-                    listItem.innerHTML = `
-                        ${productName} - $${productPrice} 
-                        <button class="delete">Delete</button>
-                    `;
-                    productList.appendChild(listItem);
-
-                    // Clear form inputs
-                    addProductForm.reset();
-                }
-            });
-
-            productList.addEventListener('click', function(event) {
-                if (event.target && event.target.matches('button.delete')) {
-                    const listItem = event.target.parentElement;
-                    productList.removeChild(listItem);
-                }
-            });
-        });
-    </script> -->
 </body>
 </html>
