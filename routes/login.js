@@ -1,38 +1,56 @@
 var express = require('express');
 var router = express.Router();
 var connection = require('../connect'); // Import the database connection
+var bcrypt = require('bcrypt'); // Import bcrypt for password comparison
 
 // Handle login POST request
 router.post('/', (req, res) => {
   var { email, password } = req.body;
 
+  // Check if email and password are provided
   if (!email || !password) {
     return res.status(400).send('Email and password are required.');
   }
 
-  // Query to find the user by email and password
-  var sql = 'SELECT * FROM users WHERE email = ? AND password = ?';
-  connection.query(sql, [email, password], (err, results) => {
+  // Query to find the user by email
+  var sql = 'SELECT * FROM users WHERE email = ?';
+  connection.query(sql, [email], (err, results) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Server error. Please try again later.');
     }
 
+    // Check if user is found
     if (results.length > 0) {
-      // Save user information in session
       var user = results[0];
-      req.session.user = {
-        username: user.username,
-        role: user.username === 'admin' ? 'admin' : 'user' // Set role based on username
-      };
 
-      // Redirect based on user role
-      if (req.session.user.role === 'admin') {
-        res.redirect('/useradmin');
-      } else {
-        res.redirect('/');
-      }
+      // Compare the hashed password
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send('Server error. Please try again later.');
+        }
+
+        if (isMatch) {
+          // Password matched, set user session
+          req.session.user = {
+            username: user.username,
+            role: user.username === 'admin' ? 'admin' : 'user' // Example role check; customize as needed
+          };
+
+          // Redirect based on user role
+          if (req.session.user.role === 'admin') {
+            res.redirect('/useradmin');
+          } else {
+            res.redirect('/');
+          }
+        } else {
+          // Password did not match
+          res.status(401).send('Invalid email or password.');
+        }
+      });
     } else {
+      // User not found
       res.status(401).send('Invalid email or password.');
     }
   });

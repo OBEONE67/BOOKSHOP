@@ -9,8 +9,6 @@
     
     body {
       font-family: "Itim", cursive;
-      font-weight: 400;
-      font-style: normal;
       background-color: #f0f0f0;
       margin: 0;
       padding: 0;
@@ -51,9 +49,6 @@
       border: 1px solid #ddd;
       border-radius: 5px;
       font-size: 16px;
-      font-family: "Itim", cursive;
-      font-weight: 400;
-      font-style: normal;
     }
 
     .btn {
@@ -67,9 +62,6 @@
       cursor: pointer;
       margin-top: 10px;
       transition: background-color 0.3s;
-      font-family: "Itim", cursive;
-      font-weight: 400;
-      font-style: normal;
     }
 
     .btn:hover {
@@ -78,9 +70,6 @@
 
     .links {
       margin-top: 15px;
-      font-family: "Itim", cursive;
-      font-weight: 400;
-      font-style: normal;
       text-align: center;
     }
 
@@ -99,6 +88,14 @@
     <h2>สมัครสมาชิก</h2>
     <form action="/register" method="POST">
       <div class="form-group">
+        <label for="firstname">ชื่อ</label>
+        <input type="text" id="firstname" name="firstname" placeholder="กรอกชื่อของคุณ" required>
+      </div>
+      <div class="form-group">
+        <label for="lastname">นามสกุล</label>
+        <input type="text" id="lastname" name="lastname" placeholder="กรอกนามสกุลของคุณ" required>
+      </div>
+      <div class="form-group">
         <label for="username">ชื่อผู้ใช้</label>
         <input type="text" id="username" name="username" placeholder="กรอกชื่อผู้ใช้ของคุณ" required>
       </div>
@@ -109,6 +106,14 @@
       <div class="form-group">
         <label for="email">อีเมล</label>
         <input type="email" id="email" name="email" placeholder="กรอกอีเมลของคุณ" required>
+      </div>
+      <div class="form-group">
+        <label for="address">ที่อยู่</label>
+        <input type="text" id="address" name="address" placeholder="กรอกที่อยู่ของคุณ" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">เบอร์โทรศัพท์</label>
+        <input type="tel" id="phone" name="phone" placeholder="กรอกเบอร์โทรศัพท์ของคุณ" required pattern="[0-9]{10}">
       </div>
       <button type="submit" class="btn">สมัครสมาชิก</button>
       <div class="links">
