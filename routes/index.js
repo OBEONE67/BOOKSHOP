@@ -31,6 +31,16 @@ router.get('/useradmin', function(req, res, next) {
   res.render('useradmin', { title: 'useradmin' });
 });
 
+/* GET UserAdmin page. */
+router.get('/useradmin', function(req, res, next) {
+  res.render('useradmin', { title: 'useradmin' });
+});
+
+/* GET UserAdmin page. */
+router.get('/productList', function(req, res, next) {
+  res.render('productList', { title: 'productList' });
+});
+
 
 
 module.exports = router;

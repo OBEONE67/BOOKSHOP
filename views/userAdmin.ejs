@@ -91,34 +91,12 @@
             background-color: #c82333;
         }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        li:last-child {
-            border-bottom: none;
-        }
-
-        li button.delete {
-            font-size: 14px;
-            padding: 5px 10px;
-        }
-
         /* ปุ่ม Logout */
         .logout-button {
             position: absolute;
             top: 20px;
             right: 20px;
-            background-color: #e65c00   ;
+            background-color: #e65c00;
             border: none;
             padding: 10px 20px;
             border-radius: 4px;
@@ -130,6 +108,22 @@
 
         .logout-button:hover {
             background-color: #ff6600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
@@ -163,21 +157,41 @@
             <input type="number" id="stock" name="stock" required>
             
             <button type="submit">Add Book</button>
-        </form>
+        </form> 
         
         <h2>Product List</h2>
-        <ul id="productList">
-            <% if (typeof books !== 'undefined' && books.length > 0) { %>
-                <% books.forEach(function(books) { %>
-                    <li>
-                        <span><%= books.BookName %> - <%= books.Title %> by <%= books.Author %></span>
-                        <span>Price: $<%= books.Price %>, Stock: <%= books.Stock %></span>
-                    </li>
-                <% }); %>
-            <% } else { %>
-                <li>No books available.</li>
-            <% } %>
-        </ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>Book Name</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Publisher</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (typeof books !== 'undefined' && books.length > 0) { %>
+                    <% books.forEach(function(book) { %>
+                        <tr>
+                            <td><%= book.BookName %></td>
+                            <td><%= book.Title %></td>
+                            <td><%= book.Author %></td>
+                            <td><%= book.Publisher %></td>
+                            <td><%= book.CategoryName %></td>
+                            <td>$<%= book.Price %></td>
+                            <td><%= book.Stock %></td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="5">No books available.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
