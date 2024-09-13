@@ -137,7 +137,7 @@
     <a href="/logout"><button class="logout-button">Logout</button></a>
     <h1>Product Management</h1>
     <div class="container">
-        <form id="addProductForm" action="/useradmin" method="post">
+        <form id="addProductForm" action="/userAdmin" method="post">
             <label for="bookName">Book Name:</label>
             <input type="text" id="bookName" name="bookName" required>
             
@@ -167,6 +167,16 @@
         
         <h2>Product List</h2>
         <ul id="productList">
+            <% if (typeof books !== 'undefined' && books.length > 0) { %>
+                <% books.forEach(function(books) { %>
+                    <li>
+                        <span><%= books.BookName %> - <%= books.Title %> by <%= books.Author %></span>
+                        <span>Price: $<%= books.Price %>, Stock: <%= books.Stock %></span>
+                    </li>
+                <% }); %>
+            <% } else { %>
+                <li>No books available.</li>
+            <% } %>
         </ul>
     </div>
 </body>
