@@ -1,26 +1,24 @@
 <%- include('partials/header') %>
-<!-- หนังสือแนะนำ (Recommended Books) -->
+
+<!-- หนังสือแนะนำ (Recommended Books)
 <section class="recommended-books">
     <h2>หนังสือแนะนำ</h2>
     <div class="book-list">
-        <div class="book-item">
-            <img src="https://cdn-local.mebmarket.com/meb/server1/317510/Thumbnail/book_detail_large.gif?2" alt="Book 1">
-            <h3>นางรองเช่นข้าไม่ขอเล่นตามบท!</h3>
-            <p>**นิยายสั้น แนวOmegaverse+ไทยประยุกต์ เนื้อหากระชับ ดำเนินเรื่องเร็ว เป็นนิยายเซ็ตปราบเสือรุ่นลูก 
-                สามารถอ่านแยกได้ แต่ถ้าอ่านรุ่นพ่อแม่มาก่อนจะได้อรรถรสมากกว่าค่ะ**
-            </p>
-            <p><a href="">รายละเอียดเกี่ยวกับหนังสือ...</a></p>
-            <button>เพิ่มลงในตะกร้า</button>
-        </div>
-        <div class="book-item">
-            <img src="https://cdn-local.mebmarket.com/meb/server1/319451/Thumbnail/book_detail_large.gif?2" alt="Book 2">
-            <h3>คุณพ่อวัยใส</h3>
-            <p>แฟนไปท้องกับผู้ชายคนอื่น ฉันเลยซวยที่ต้องมาเป็นพ่อไอ้หนูน้อยคนนี้
-                ทั้งๆที่อายุยังไม่ทันถึง 18 ปีเลยด้วยซ้ำ..</p>
-            <p><a href="">รายละเอียดเกี่ยวกับหนังสือ...</a></p>
-            <button>เพิ่มลงในตะกร้า</button>
-        </div>
-        <!-- สามารถเพิ่มหนังสือได้อีกตามต้องการ -->
+        <% if (typeof books !== 'undefined' && books.length > 0) { %>
+            <% books.forEach(function(book) { %>
+                <div class="book-item">
+                    <img src="../uploads/<%= book.Photo %>" alt="<%= book.Title %>" width="100">
+                    <h3><%= book.BookName %></h3>
+                    <p><%= book.Title %></p>
+                    <p><a href="">รายละเอียดเกี่ยวกับหนังสือ...</a></p>
+                    <button>เพิ่มลงในตะกร้า</button>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>No recommended books available at the moment.</p>
+        <% } %>
     </div>
-</section>
+</section> -->
+
 <%- include('partials/footer') %>
+

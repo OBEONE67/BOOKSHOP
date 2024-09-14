@@ -28,11 +28,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/uploads', express.static('uploads'));
+
+
 app.use(session({
   secret: 'mySuperSecretKey12345!',
-  resave: false,
+  resave: true,
   saveUninitialized: true,
-  cookie: { secure: false } // ใช้ secure: true ถ้าใช้ HTTPS
+  cookie: { secure: true } // ใช้ secure: true ถ้าใช้ HTTPS
 }))
 
 app.use((req, res, next) => {
