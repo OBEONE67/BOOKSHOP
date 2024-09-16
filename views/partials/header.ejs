@@ -325,7 +325,7 @@
             </nav>
             <div class="header-right">
                 <input type="text" placeholder="ค้นหาหนังสือ...">
-                <% if (user !== undefined) { %>
+                <% if (user) { %>
                     <span>ยินดีต้อนรับ, <%= user.username %></span>
                     <a href="/logout" class="btn">ออกจากระบบ</a>
                 <% } else { %>
