@@ -129,9 +129,9 @@
 </head>
 <body>
     <a href="/logout"><button class="logout-button">Logout</button></a>
-    <h1>Product Management</h1>
+    <h1>book Management</h1>
     <div class="container">
-        <form id="addProductForm" action="/userAdmin" method="post" enctype="multipart/form-data">
+        <form id="addbookForm" action="/userAdmin" method="post" enctype="multipart/form-data">
             <label for="bookName">Book Name:</label>
             <input type="text" id="bookName" name="bookName" required>
             
@@ -160,7 +160,7 @@
         </form>
         
         
-        <h2>Product List</h2>
+        <h2>book List</h2>
         <table>
             <thead>
                 <tr>
@@ -175,32 +175,31 @@
                 </tr>
             </thead>
             <tbody>
-                <% if (typeof books !== 'undefined' && books.length > 0) { %>
-                    <% books.forEach(function(books) { %>
-                        <tr>
-                            <td><%= books.BookName %></td>
-                            <td><%= books.Title %></td>
-                            <td><%= books.Author %></td>
-                            <td><%= books.Publisher %></td>
-                            <td><%= books.CategoryName %></td>
-                            <td>$<%= books.Price %></td>
-                            <td><%= books.Stock %></td>
-                            <td>
-                                <% if (books.Photo) { %>
-                                    <img src="/uploads/<%= books.Photo %>" alt="<%= books.Title %>" width="100">
-                                <% } else { %>
-                                    No Image
-                                <% } %>
-                            </td>
-                        </tr>
-                    <% }); %>
-                <% } else { %>
-                    <tr>
-                        <td colspan="8">No books available.</td>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
+    <% if (typeof books !== 'undefined' && books.length > 0) { %>
+        <% books.forEach(function(book) { %>
+            <tr>
+                <td><%= book.BookName %></td>
+                <td><%= book.Title %></td>
+                <td><%= book.Author %></td>
+                <td><%= book.Publisher %></td>
+                <td><%= book.CategoryName %></td>
+                <td>$<%= book.Price %></td>
+                <td><%= book.Stock %></td>
+                <td>
+                    <% if (book.Photo) { %>
+                        <img src="/uploads/<%= books.Photo %>" alt="<%= books.Title %>" width="100">
+                    <% } else { %>
+                        No Image
+                    <% } %>
+                </td>
+            </tr>
+        <% }); %>
+    <% } else { %>
+        <tr>
+            <td colspan="8">No books available.</td>
+        </tr>
+    <% } %>
+</tbody>
     </div>
 </body>
 </html>

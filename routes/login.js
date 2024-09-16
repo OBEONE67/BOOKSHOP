@@ -40,7 +40,15 @@ router.post('/', (req, res) => {
 
           // Redirect based on user role
           if (req.session.user.role === 'admin') {
-            res.redirect('/useradmin');
+            var sql2 = 'SELECT * FROM books';
+        connection.query(sql2, (err, result) => {
+            if (err) {
+              console.error(err);
+            } else {
+              req.session.books = result;
+              res.render('useradmin', { books: req.session.books });
+            }
+          });
           } else {
             res.redirect('/');
           }

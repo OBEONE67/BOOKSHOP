@@ -1,370 +1,349 @@
-้้<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BookShop</title>
-</head>
-<body>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
-        </style>
-    </head>
-    <style>
-      /* รีเซ็ตค่าเบื้องต้น */
-    * {
-        margin: -5px;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Itim", cursive;
-        font-weight: 500;
-        font-style: normal;
-    }
-    
-    /* ส่วนหัว (Header) */
-    header {
-        background-color: #f4f4f4;
-        padding: 20px 0;
-        border-bottom: 1px solid #ddd;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-    }
-    
-    /* ปรับปรุงการจัดวาง */
-    .container {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        padding: 5px 5px;
-    }
-    
-    .logo img {
-        max-width: 150px;
-        height: auto;
-        margin: 0; /* เอา margin auto ออก */
-    }
-    
-    .navbar ul {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        list-style: none;
-    }
-    
-    .navbar ul li a {
-        font-size: 18px;
-        color: #333;
-        font-weight: bold;
-        text-decoration: none;
-        padding: 10px 15px;
-    }
-    
-    .navbar ul li a:hover {
-        color: #ff6600;
-    }
-    
-    .header-right {
-        display: flex;
-        align-items: center;
-        gap: 20px; /* ลดระยะห่างระหว่างองค์ประกอบ */
-    }
-    
-    .header-right input {
-        padding: 5px 10px;
-        border-radius: 20px;
-        border: 1px solid #ddd;
-    }
-    
-    .header-right button {
-        padding: 7px 15px;
-        background-color: #ff6600;
-        color: #fff;
-        border: none;
-        border-radius: 20px;
-        font-size: 16px;
-        cursor: pointer;
-    }
-    
-    .header-right button:hover {
-        background-color: #e65c00;
-    }
-    
-    .cart-icon {
-        font-size: 24px;
-        color: #333;
-        cursor: pointer;
-    }
-    
-    .cart-icon:hover {
-        color: #ff6600;
-    }
-    
-    /* จัดวางให้ช่องค้นหาและปุ่ม logout อยู่ในแถวเดียวกัน */
-    .header-right span, .header-right input, .header-right button, .cart-icon {
-        margin-left: 15px;
-    }
-    
-    /* แบนเนอร์หลัก (Main Banner) */
-    .main-banner {
-        background: url('banner.jpg') no-repeat center center/cover;
-        color: #fff;
-        height: 400px; /* เพิ่มความสูงของแบนเนอร์ */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        position: relative;
-    }
-    
-    .banner-content {
-        background-color: rgba(0, 0, 0, 0.7);
-        padding: 30px;
-        border-radius: 10px;
-    }
-    
-    .main-banner h2 {
-        font-size: 40px;
-        margin-bottom: 15px;
-    }
-    
-    .main-banner p {
-        font-size: 20px;
-        margin-bottom: 15px;
-    }
-    
-    .main-banner .btn {
-        padding: 10px 20px;
-        background-color: #ff6600;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 10px;
-        transition: background-color 0.3s;
-    }
-    
-    .main-banner .btn:hover {
-        background-color: #e65c00;
-    }
-    
-    /* หมวดหมู่หนังสือ (Book Categories) */
-    .categories {
-        padding: 60px 0;
-        background-color: #fafafa;
-        text-align: center;
+
+        /* รีเซ็ตค่าเบื้องต้น */
+        * {
+            margin: -5px;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Itim", cursive;
+            font-weight: 500;
+            font-style: normal;
+        }
         
+        /* ส่วนหัว (Header) */
+        header {
+            background-color: #f4f4f4;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
         
-    }
-    
-    .categories h2 {
-        font-size: 32px;
-        margin-bottom: 25px;
-        color: #333;
-    }
-    
-    .category-list {
-        display: flex;
-        justify-content: center;
-        gap: 30px; /* เพิ่มระยะห่าง */
-        flex-wrap: wrap;
-        text-decoration: none; /* เอาขีดเส้นใต้ลิงก์ออก */
-    }
-    
-    .category-item {
-        background-color: #fff;
-        padding: 20px 40px;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: background-color 0.3s, transform 0.3s;
-        text-decoration: none; /* เอาขีดเส้นใต้ลิงก์ออก */
-    }
-    
-    .category-item:hover {
-        background-color: #ff6600;
-        color: #fff;
-        transform: translateY(-5px); /* เพิ่มเอฟเฟ็กต์ลอยขึ้น */
+        /* ปรับปรุงการจัดวาง */
+        .container {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 5px 5px;
+        }
         
-    }
-    
-    a {
-        text-decoration: none; /* เอาขีดเส้นใต้ลิงก์ออก */
-        color: inherit; /* ใช้สีเดียวกับข้อความ */
-    }
-    
-    /* หนังสือแนะนำ (Recommended Books) */
-    .recommended-books {
-        padding: 60px 0;
-        text-align: center;
-    }
-    
-    .recommended-books h2 {
-        font-size: 32px;
-        margin-bottom: 25px;
-        color: #333;
-    }
-    
-    .book-list {
-        display: flex;
-        justify-content: center;
-        gap: 30px; /* เพิ่มระยะห่าง */
-        flex-wrap: wrap;
-    }
-    
-    .book-item {
-        background-color: #fff;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        width: 250px;
-        text-align: center;
-        transition: transform 0.3s;
-    }
-    
-    .book-item:hover {
-        transform: translateY(-5px); /* เพิ่มเอฟเฟ็กต์ลอยขึ้น */
-    }
-    
-    .book-item img {
-        width: 100%;
-        height: auto;
-        border-radius: 10px;
-    }
-    
-    .book-item h3 {
-        font-size: 20px;
-        margin: 15px 0;
-    }
-    
-    .book-item p {
-        font-size: 16px;
-        color: #666;
-        margin-bottom: 15px;
-    }
-    
-    .book-item button {
-        padding: 10px 20px;
-        background-color: #ff6600;
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    
-    .book-item button:hover {
-        background-color: #e65c00;
-    }
-    
-    /* ส่วนท้าย (Footer) */
-    footer {
-        background-color: #333;
-        color: #fff;
-        padding: 40px 0;
-        text-align: center;
-        margin-top: 50px;
-    }
-    
-    .footer-container {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 30px;
-        width: 90%;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    
-    .footer-info,
-    .footer-links,
-    .footer-social {
-        flex: 1;
-        min-width: 200px;
-    }
-    
-    .footer-links a,
-    .footer-social a {
-        color: #ff6600;
-        text-decoration: none;
-        display: block;
-        margin: 8px 0;
-        transition: color 0.3s;
-    }
-    
-    .footer-links a:hover,
-    .footer-social a:hover {
-        color: #fff;
-    }
-    
-    .btn {
-        display: inline-block;
-        padding: 1px 5px;
-        background-color: #ff6600;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 18px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    
-    .btn:hover {
-        background-color: #e65c00;
-    }
-    
-    
-      
-      
+        .logo img {
+            max-width: 150px;
+            height: auto;
+            margin: 0; /* เอา margin auto ออก */
+        }
+        
+        .navbar ul {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            list-style: none;
+        }
+        
+        .navbar ul li a {
+            font-size: 18px;
+            color: #333;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 10px 15px;
+        }
+        
+        .navbar ul li a:hover {
+            color: #ff6600;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* ลดระยะห่างระหว่างองค์ประกอบ */
+        }
+        
+        .header-right input {
+            padding: 5px 10px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+        }
+        
+        .header-right button {
+            padding: 7px 15px;
+            background-color: #ff6600;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        .header-right button:hover {
+            background-color: #e65c00;
+        }
+        
+        .cart-icon {
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+        }
+        
+        .cart-icon:hover {
+            color: #ff6600;
+        }
+        
+        /* จัดวางให้ช่องค้นหาและปุ่ม logout อยู่ในแถวเดียวกัน */
+        .header-right span, .header-right input, .header-right button, .cart-icon {
+            margin-left: 15px;
+        }
+        
+        /* แบนเนอร์หลัก (Main Banner) */
+        .main-banner {
+            background: url('banner.jpg') no-repeat center center/cover;
+            color: #fff;
+            height: 400px; /* เพิ่มความสูงของแบนเนอร์ */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+        
+        .banner-content {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+        }
+        
+        .main-banner h2 {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .main-banner p {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .main-banner .btn {
+            padding: 10px 20px;
+            background-color: #ff6600;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .main-banner .btn:hover {
+            background-color: #e65c00;
+        }
+        
+        /* หมวดหมู่หนังสือ (Book Categories) */
+        .categories {
+            padding: 60px 0;
+            background-color: #fafafa;
+            text-align: center;
+        }
+        
+        .categories h2 {
+            font-size: 32px;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        
+        .category-list {
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* เพิ่มระยะห่าง */
+            flex-wrap: wrap;
+            text-decoration: none; /* เอาขีดเส้นใต้ลิงก์ออก */
+        }
+        
+        .category-item {
+            background-color: #fff;
+            padding: 20px 40px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            text-decoration: none; /* เอาขีดเส้นใต้ลิงก์ออก */
+        }
+        
+        .category-item:hover {
+            background-color: #ff6600;
+            color: #fff;
+            transform: translateY(-5px); /* เพิ่มเอฟเฟ็กต์ลอยขึ้น */
+        }
+        
+        a {
+            text-decoration: none; /* เอาขีดเส้นใต้ลิงก์ออก */
+            color: inherit; /* ใช้สีเดียวกับข้อความ */
+        }
+        
+        /* หนังสือแนะนำ (Recommended Books) */
+        .recommended-books {
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .recommended-books h2 {
+            font-size: 32px;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        
+        .book-list {
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* เพิ่มระยะห่าง */
+            flex-wrap: wrap;
+        }
+        
+        .book-item {
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            width: 250px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .book-item:hover {
+            transform: translateY(-5px); /* เพิ่มเอฟเฟ็กต์ลอยขึ้น */
+        }
+        
+        .book-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        
+        .book-item h3 {
+            font-size: 20px;
+            margin: 15px 0;
+        }
+        
+        .book-item p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .book-item button {
+            padding: 10px 20px;
+            background-color: #ff6600;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .book-item button:hover {
+            background-color: #e65c00;
+        }
+        
+        /* ส่วนท้าย (Footer) */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-info,
+        .footer-links,
+        .footer-social {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer-links a,
+        .footer-social a {
+            color: #ff6600;
+            text-decoration: none;
+            display: block;
+            margin: 8px 0;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover,
+        .footer-social a:hover {
+            color: #fff;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 1px 5px;
+            background-color: #ff6600;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #e65c00;
+        }
     </style>
-    <body>
-        <!-- ส่วนหัว (Header) -->
-        <header>
-            <div class="container">
-                <div class="logo">
-                    <a href="/"><img src="https://img5.pic.in.th/file/secure-sv1/BookstoreLogo.png" alt="BookstoreLogo"></a>
-                </div>
-                <nav class="navbar">
-                    <ul>
-                        <li><a href="/">หน้าแรก</a></li>
-                        <li><a href="#">หมวดหมู่หนังสือ</a></li>
-                        <li><a href="#">สินค้าแนะนำ</a></li>
-                        <li><a href="#">โปรโมชั่น</a></li>
-                        <li><a href="#">เกี่ยวกับเรา</a></li>
-                        <li><a href="#">ติดต่อเรา</a></li>
-                    </ul>
-                </nav>
-                <div class="header-right">
-                    <input type="text" placeholder="ค้นหาหนังสือ...">
-                    <% if (user) { %>
-                        <span>ยินดีต้อนรับ, <%= user.username %></span>
-                        <a href="/logout" class="btn">ออกจากระบบ</a>
-                    <% } else { %>
-                        <button><a href="/login" class="btn">เข้าสู่ระบบ</a></button>
-                    <% } %>
-                    <a href="#" class="cart-icon">🛒</a>
-                </div>
+</head>
+<body>
+    <!-- ส่วนหัว (Header) -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="/"><img src="https://img5.pic.in.th/file/secure-sv1/BookstoreLogo.png" alt="BookstoreLogo"></a>
             </div>
-        </header>
-    
-        <!-- แบนเนอร์หลัก (Main Banner)
-        <section class="main-banner">
-            <div class="banner-content">
-                <h2>โปรโมชั่นพิเศษสำหรับคุณ!</h2>
-                <p>รับส่วนลดสูงสุด 50% สำหรับหนังสือที่ร่วมรายการ</p>
-                <a href="#" class="btn">ดูรายละเอียดเพิ่มเติม</a>
+            <nav class="navbar">
+                <ul>
+                    <li><a href="/">หน้าแรก</a></li>
+                    <li><a href="#">หมวดหมู่หนังสือ</a></li>
+                    <li><a href="#">สินค้าแนะนำ</a></li>
+                    <li><a href="#">โปรโมชั่น</a></li>
+                    <li><a href="#">เกี่ยวกับเรา</a></li>
+                    <li><a href="#">ติดต่อเรา</a></li>
+                </ul>
+            </nav>
+            <div class="header-right">
+                <input type="text" placeholder="ค้นหาหนังสือ...">
+                <% if (user !== undefined) { %>
+                    <span>ยินดีต้อนรับ, <%= user.username %></span>
+                    <a href="/logout" class="btn">ออกจากระบบ</a>
+                <% } else { %>
+                    <button><a href="/login" class="btn">เข้าสู่ระบบ</a></button>
+                <% } %>
+                <a href="#" class="cart-icon">🛒</a>
             </div>
-        </section> -->
-    
-        <!-- หมวดหมู่หนังสือ (Book Categories) -->
-        <section class="categories">
-            <h2>หมวดหมู่หนังสือ</h2>
-            <div class="category-list">
-                <a href="/BOOKTYPE1"><div  class="category-item">นิยาย</div></a>
-                <div class="category-item">การ์ตูน</div>
-                <div class="category-item">การเรียนรู้</div>
-                <div class="category-item">ประวัติศาสตร์</div>
-                <div class="category-item">วรรณกรรม</div>
-            </div>
-        </section>
+        </div>
+    </header>
+    <section class="categories">
+        <h2>หมวดหมู่หนังสือ</h2>
+        <div class="category-list">
+            <a href="/BOOKTYPE1"><div class="category-item">นิยาย</div></a>
+            <div class="category-item">การ์ตูน</div>
+            <div class="category-item">การเรียนรู้</div>
+            <div class="category-item">ประวัติศาสตร์</div>
+            <div class="category-item">วรรณกรรม</div>
+        </div>
+    </section>
 </body>
-</html>    
+</html>

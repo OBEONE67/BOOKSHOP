@@ -20,6 +20,8 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.set('view engine', 'ejs');
 
+app.set('views', './views/');
+
 
 
 app.use(logger('dev'));
@@ -32,10 +34,10 @@ app.use('/uploads', express.static('uploads'));
 
 
 app.use(session({
-  secret: 'mySuperSecretKey12345!',
+  secret: 'test',
   resave: true,
   saveUninitialized: true,
-  cookie: { secure: true } // ใช้ secure: true ถ้าใช้ HTTPS
+  cookie: { secure: false } // ใช้ secure: true ถ้าใช้ HTTPS 
 }))
 
 app.use((req, res, next) => {
