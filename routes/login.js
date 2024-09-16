@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
           // Redirect based on user role
           if (req.session.user.role === 'admin') {
             var sql2 = 'SELECT * FROM books';
-        connection.query(sql2, (err, result) => {
+            connection.query(sql2, (err, result) => {
             if (err) {
               console.error(err);
             } else {
@@ -50,7 +50,15 @@ router.post('/', (req, res) => {
             }
           });
           } else {
-            res.redirect('/');
+            var sql2 = 'SELECT * FROM books';
+            connection.query(sql2, (err, result) => {
+            if (err) {
+              console.error(err);
+            } else {
+              req.session.books = result;
+              res.render('', { books: req.session.books });
+            }
+          });
           }
         } else {
           // Password did not match

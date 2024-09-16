@@ -42,17 +42,7 @@ router.get('/productList', function(req, res, next) {
 });
 
 
-router.get('/', (req, res) => {
-  var query = 'SELECT BookName, Title, Photo FROM books';
-  connection.query(query, (err, results) => {
-      if (err) {
-          console.error('Error fetching books:', err);
-          return res.status(500).send('Error fetching books');
-      }
-      console.log('Books fetched:', results); // ตรวจสอบข้อมูลที่ดึงมาได้
-      res.render('index', { books: results });
-  });
-});
+
 
 
 

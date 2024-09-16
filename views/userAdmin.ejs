@@ -160,46 +160,46 @@
         </form>
         
         
-        <h2>book List</h2>
-        <table>
-            <thead>
+                <h2>book List</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Book Name</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Publisher</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Photo</th> <!-- เพิ่มคอลัมน์สำหรับรูปภาพ -->
+                        </tr>
+                    </thead>
+                    <tbody>
+            <% if (typeof books !== 'undefined' && books.length > 0) { %>
+                <% books.forEach(function(book) { %>
+                    <tr>
+                        <td><%= book.BookName %></td>
+                        <td><%= book.Title %></td>
+                        <td><%= book.Author %></td>
+                        <td><%= book.Publisher %></td>
+                        <td><%= book.CategoryName %></td>
+                        <td>$<%= book.Price %></td>
+                        <td><%= book.Stock %></td>
+                        <td>
+                            <% if (book.photo) { %>
+                                <img src="/uploads/<%= book.photo %>" alt="<%= book.Title %>" width="100">
+                            <% } else { %>
+                                No Image
+                            <% } %>
+                        </td>
+                    </tr>
+                <% }); %>
+            <% } else { %>
                 <tr>
-                    <th>Book Name</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Publisher</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Photo</th> <!-- เพิ่มคอลัมน์สำหรับรูปภาพ -->
+                    <td colspan="8">No books available.</td>
                 </tr>
-            </thead>
-            <tbody>
-    <% if (typeof books !== 'undefined' && books.length > 0) { %>
-        <% books.forEach(function(book) { %>
-            <tr>
-                <td><%= book.BookName %></td>
-                <td><%= book.Title %></td>
-                <td><%= book.Author %></td>
-                <td><%= book.Publisher %></td>
-                <td><%= book.CategoryName %></td>
-                <td>$<%= book.Price %></td>
-                <td><%= book.Stock %></td>
-                <td>
-                    <% if (book.photo) { %>
-                        <img src="/uploads/<%= book.photo %>" alt="<%= book.Title %>" width="100">
-                    <% } else { %>
-                        No Image
-                    <% } %>
-                </td>
-            </tr>
-        <% }); %>
-    <% } else { %>
-        <tr>
-            <td colspan="8">No books available.</td>
-        </tr>
-    <% } %>
-</tbody>
+            <% } %>
+        </tbody>
     </div>
 </body>
 </html>

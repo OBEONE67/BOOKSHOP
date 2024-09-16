@@ -4,19 +4,7 @@ var connection = require('../connect');
 var multer = require('multer');
 var path = require('path');
 
-router.get('/', (req, res) => {
-    var query = 'SELECT BookName, Title, Author, Publisher, Photo, CategoryName, Price, Stock FROM books';
-    
-    connection.query(query, (err, results) => {
-        if (err) {
-            console.error('Error fetching data:', err);
-            return res.status(500).send('Error fetching data');
-        }
-        
-        // ส่งข้อมูล books ไปที่หน้า userAdmin.ejs
-        res.render('userAdmin', { books: results });
-    });
-});
+
 
 
 // ตั้งค่า storage สำหรับ multer เพื่อเก็บไฟล์ในโฟลเดอร์ uploads
@@ -55,21 +43,6 @@ router.post('/', upload.single('photo'), (req, res) => {
         
     });
 });
-
-// // Route สำหรับแสดงข้อมูลหนังสือในหน้า userAdmin
-// router.get('/', (req, res) => {
-//     var query = 'SELECT * FROM books';
-    
-//     connection.query(query, (err, results) => {
-//         if (err) {
-//             console.error('Error fetching data:', err); // แสดงข้อผิดพลาดในคอนโซล
-//             return res.status(500).send('Error fetching data');
-//         }
-
-//         // เรนเดอร์หน้า userAdmin.ejs และส่งข้อมูล books ไปยัง view
-//         res.render('userAdmin', { books: results });
-//     });
-// });
 
 
     
