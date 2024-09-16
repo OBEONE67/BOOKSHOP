@@ -52,7 +52,7 @@ router.post('/', upload.single('photo'), (req, res) => {
               res.render('useradmin', { books: req.session.books });
             }
           });
-        // res.render('userAdmin');
+        
     });
 });
 

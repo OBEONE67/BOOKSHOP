@@ -186,8 +186,8 @@
                 <td>$<%= book.Price %></td>
                 <td><%= book.Stock %></td>
                 <td>
-                    <% if (book.Photo) { %>
-                        <img src="/uploads/<%= books.Photo %>" alt="<%= books.Title %>" width="100">
+                    <% if (book.photo) { %>
+                        <img src="/uploads/<%= book.photo %>" alt="<%= book.Title %>" width="100">
                     <% } else { %>
                         No Image
                     <% } %>
