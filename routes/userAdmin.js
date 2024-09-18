@@ -3,7 +3,6 @@ var router = express.Router();
 var connection = require('../connect');
 var multer = require('multer');
 var path = require('path');
-var fs = require('fs'); // ใช้ในการลบไฟล์
 
 // ตั้งค่า storage สำหรับ multer เพื่อเก็บไฟล์ในโฟลเดอร์ uploads
 var storage = multer.diskStorage({
@@ -33,7 +32,6 @@ router.post('/', upload.single('photo'), (req, res) => {
         connection.query(sql2, (err, result) => {
             if (err) {
                 console.error(err);
-                return res.status(500).send('Server Error');
             } else {
                 req.session.books = result;
                 res.render('useradmin', { books: req.session.books });
@@ -42,63 +40,81 @@ router.post('/', upload.single('photo'), (req, res) => {
     });
 });
 
-// ลบหนังสือ
-router.post('/books/delete/:id', (req, res) => {
-    const bookId = req.params.id;
-
-    // เรียกดูรายละเอียดหนังสือก่อนลบ
-    connection.query('SELECT photo FROM books WHERE id = ?', [bookId], (err, results) => {
-        if (err) throw err;
-
-        // ลบไฟล์ภาพที่เกี่ยวข้อง (ถ้ามี)
-        if (results.length > 0 && results[0].photo) {
-            const filePath = path.join('uploads', results[0].photo);
-            fs.unlink(filePath, (err) => {
-                if (err) console.error('Failed to delete image:', err);
-                
-            });
-        }
-
-        // ลบหนังสือจากฐานข้อมูล
-        connection.query('DELETE FROM books WHERE id = ?', [bookId], (err, result) => {
-            if (err) throw err;
-            res.redirect('/useradmin'); // เปลี่ยนเส้นทางไปยังหน้ารายการหนังสือ
-        });
-    });
-});
-
-// แสดงฟอร์มแก้ไข
-router.get('/books/edit/:id', (req, res) => {
-    const bookId = req.params.id;
-    connection.query('SELECT * FROM books WHERE id = ?', [bookId], (err, results) => {
-        if (err) throw err;
-        res.render('useradmin', { book: results[0] });
-    });
-});
-
-// แก้ไขข้อมูลหนังสือ
-router.post('/books/update', (req, res) => {
-    const { bookId, bookName, title, author, publisher, categoryName, price, stock } = req.body;
-
-    const query = 'UPDATE books SET BookName = ?, Title = ?, Author = ?, Publisher = ?, CategoryName = ?, Price = ?, Stock = ? WHERE id = ?';
-    connection.query(query, [bookName, title, author, publisher, categoryName, price, stock, bookId], (err, result) => {
+// Route สำหรับแสดงหน้าแก้ไขหนังสือ
+router.get('/editbook/:BookID', (req, res) => {
+    var BookID = req.params.BookID;
+    var query = 'SELECT * FROM books WHERE BookID = ?';
+    
+    connection.query(query, [BookID], (err, result) => {
         if (err) {
-            console.error(err);
-            return res.json({ success: false, message: 'Error updating book' });
+            console.error(err); // แสดงข้อผิดพลาดในคอนโซล
+            return res.status(500).send('Error retrieving book data');
         }
-        res.json({ success: true });
+        if (result.length === 0) {
+            return res.status(404).send('Book not found');
+        }
+        res.render('editbook', { book: result[0] }); // ส่งข้อมูลหนังสือไปยังหน้า editbook.ejs
+    });
+});
+
+// Route สำหรับอัปเดตหนังสือ
+router.post('/editbook/:BookID', upload.single('photo'), (req, res) => {
+    var BookID = req.params.BookID;
+    var { bookName, title, author, publisher, categoryName, price, stock } = req.body;
+    var photo = req.file ? req.file.filename : null; // ถ้ามีการอัปโหลดรูปใหม่
+
+    // สร้าง query สำหรับการอัปเดต
+    var updateQuery = `
+        UPDATE books 
+        SET BookName = ?, Title = ?, Author = ?, Publisher = ?, CategoryName = ?, Price = ?, Stock = ? 
+        ${photo ? ', photo = ?' : ''} 
+        WHERE BookID = ?
+    `;
+    
+    // สร้าง array ของพารามิเตอร์สำหรับ query
+    var params = [bookName, title, author, publisher, categoryName, price, stock];
+    if (photo) params.push(photo); // ถ้ามีการอัปโหลดรูปใหม่ ให้เพิ่ม photo ในพารามิเตอร์
+    params.push(BookID);
+
+    connection.query(updateQuery, params, (err, result) => {
+        if (err) {
+            console.error(err); // แสดงข้อผิดพลาดในคอนโซล
+            return res.status(500).send('Error updating the book');
+        }
+        console.log('Book updated:', BookID);
         var sql2 = 'SELECT * FROM books';
         connection.query(sql2, (err, result) => {
             if (err) {
                 console.error(err);
-                return res.status(500).send('Server Error');
             } else {
                 req.session.books = result;
-                res.render('useradmin', { books: req.session.books });
-            }
+                res.render('useradmin', { books: req.session.books }); // หลังจากอัปเดตเสร็จ กลับไปหน้าแอดมิน
+    }
         });
     });
 });
 
+// Route สำหรับลบหนังสือ
+router.get('/deletebook/:BookID', (req, res) => {
+    var BookID = req.params.BookID;
+    var query = 'DELETE FROM books WHERE BookID = ?';
+    
+    connection.query(query, [BookID], (err, result) => {
+        if (err) {
+            console.error(err); // แสดงข้อผิดพลาดในคอนโซล
+            return res.status(500).send('Error deleting the book');
+        }
+        console.log('Book deleted:', BookID);
+        var sql2 = 'SELECT * FROM books';
+        connection.query(sql2, (err, result) => {
+            if (err) {
+                console.error(err);
+            } else {
+                req.session.books = result;
+                res.render('useradmin', { books: req.session.books }); // หลังจากลบเสร็จ กลับไปหน้าแอดมิน
+            }
+        });
+    });
+});
 
 module.exports = router;

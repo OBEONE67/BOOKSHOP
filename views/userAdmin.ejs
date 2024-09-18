@@ -6,15 +6,12 @@
     <title>UserAdmin</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
-    </style>
-    <style>
 
         * {
             font-family: "Itim", cursive;
             font-weight: 500;
             font-style: normal;
         }
-        /* styles.css */
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f4f7f6;
@@ -71,6 +68,7 @@
             color: #fff;
             font-size: 16px;
             cursor: pointer;
+            margin: 2px;
             transition: background-color 0.3s ease;
         }
 
@@ -91,7 +89,6 @@
             background-color: #c82333;
         }
 
-        /* ปุ่ม Logout */
         .logout-button {
             position: absolute;
             top: 20px;
@@ -125,11 +122,43 @@
         th {
             background-color: #f2f2f2;
         }
+
+        .book-title {
+            position: relative;
+        }
+
+        .short-text {
+            display: block;
+            max-height: 2.4em; /* Show approximately 2 lines */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .long-text {
+            display: none;
+        }
+
+        .book-title.expanded .short-text {
+            display: none;
+        }
+
+        .book-title.expanded .long-text {
+            display: block;
+        }
+
+        .toggle-text {
+            display: block;
+            color: #007bff;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
     <a href="/logout"><button class="logout-button">Logout</button></a>
-    <h1>book Management</h1>
+    <h1>Book Management</h1>
     <div class="container">
         <form id="addbookForm" action="/userAdmin" method="post" enctype="multipart/form-data">
             <label for="bookName">Book Name:</label>
@@ -145,7 +174,7 @@
             <input type="text" id="publisher" name="publisher">
             
             <label for="photo">Photo:</label>
-            <input type="file" id="photo" name="photo" accept="image/*"> <!-- เปลี่ยนเป็น input type="file" -->
+            <input type="file" id="photo" name="photo" accept="image/*">
             
             <label for="categoryName">Category Name:</label>
             <input type="text" id="categoryName" name="categoryName">
@@ -159,47 +188,77 @@
             <button type="submit">Add Book</button>
         </form>
         
-        
-                <h2>book List</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Book Name</th>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Publisher</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Stock</th>
-                            <th>Photo</th> <!-- เพิ่มคอลัมน์สำหรับรูปภาพ -->
-                        </tr>
-                    </thead>
-                    <tbody>
-            <% if (typeof books !== 'undefined' && books.length > 0) { %>
-                <% books.forEach(function(book) { %>
-                    <tr>
-                        <td><%= book.BookName %></td>
-                        <td><%= book.Title %></td>
-                        <td><%= book.Author %></td>
-                        <td><%= book.Publisher %></td>
-                        <td><%= book.CategoryName %></td>
-                        <td>$<%= book.Price %></td>
-                        <td><%= book.Stock %></td>
-                        <td>
-                            <% if (book.photo) { %>
-                                <img src="/uploads/<%= book.photo %>" alt="<%= book.Title %>" width="100">
-                            <% } else { %>
-                                No Image
-                            <% } %>
-                        </td>
-                    </tr>
-                <% }); %>
-            <% } else { %>
+        <h2>Book List</h2>
+        <table>
+            <thead>
                 <tr>
-                    <td colspan="8">No books available.</td>
+                    <th>Book Name</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Publisher</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Photo</th>
+                    <th>Actions</th>
                 </tr>
-            <% } %>
-        </tbody>
+            </thead>
+            <tbody>
+                <% if (typeof books !== 'undefined' && books.length > 0) { %>
+                    <% books.forEach(function(book) { %>
+                        <tr>
+                            <td><%= book.BookName %></td>
+                            <td>
+                                <div class="book-title">
+                                    <span class="short-text"><%= book.Title.substring(0, 40) %></span>
+                                    <% if (book.Title.length > 40) { %>
+                                        <span class="long-text"><%= book.Title %></span>
+                                        <a href="#" class="toggle-text">Show more</a>
+                                    <% } %>
+                                </div>
+                            </td>
+                            <td><%= book.Author %></td>
+                            <td><%= book.Publisher %></td>
+                            <td><%= book.CategoryName %></td>
+                            <td>$<%= book.Price %></td>
+                            <td><%= book.Stock %></td>
+                            <td>
+                                <% if (book.photo) { %>
+                                    <img src="/uploads/<%= book.photo %>" alt="<%= book.Title %>" width="100">
+                                <% } else { %>
+                                    No Image
+                                <% } %>
+                            </td>
+                            <td>
+                                <form action="/userAdmin/editbook/<%= book.BookID %>" method="get" style="display: inline;">
+                                    <button type="submit" class="edit">Edit</button>
+                                </form>
+                                <form action="/userAdmin/deletebook/<%= book.BookID %>" method="get" style="display: inline;">
+                                    <button type="submit" class="delete">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="9">No books available.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.toggle-text').forEach(function(toggle) {
+                toggle.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const parent = toggle.parentElement;
+                    parent.classList.toggle('expanded');
+                    toggle.innerText = parent.classList.contains('expanded') ? 'Show less' : 'Show more';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
