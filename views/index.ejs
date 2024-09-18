@@ -8,7 +8,6 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
 
-    /* รีเซ็ตค่าเบื้องต้น */
     * {
         margin: 0;
         padding: 0;
@@ -27,8 +26,8 @@
         position: sticky;
         top: 0;
         z-index: 1000;
-    }   
-    
+    }
+
     a {
         text-decoration: none; /* เอาขีดเส้นใต้ลิงก์ออก */
         color: inherit; /* ใช้สีเดียวกับข้อความ */
@@ -76,56 +75,105 @@
         color: #fff;
     }
 
-    /* จัดเรียงสินค้าแบบ grid */
     .products {
         display: flex;
         flex-wrap: wrap;
-        gap: 20px;
+        gap: 30px; /* ระยะห่างระหว่างการ์ด */
         justify-content: center;
     }
 
     .product-card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    width: 250px;
-    padding: 15px;
-    text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
-    min-height: 400px; /* กำหนดความสูงขั้นต่ำ */
-    display: flex;
-    flex-direction: column; /* จัดเรียงเนื้อหาในแนวตั้ง */
-    justify-content: space-between; /* แยกปุ่มออกจากเนื้อหา */
-}
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 220px;
+        height: 400px; /* กำหนดความสูงคงที่ */
+        text-align: center;
+        padding: 15px;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* จัดตำแหน่งให้เนื้อหาภายในการ์ดกระจายตัว */
+    }
 
-.product-card h3 {
-    margin-bottom: 10px;
-    font-size: 18px;
-    color: #333;
-}
+    .product-card img {
+        max-width: 100%;
+        height: 200px; /* กำหนดความสูงของภาพให้เท่ากัน */
+        object-fit: cover; /* ให้ภาพเติมเต็มขอบเขตของมัน */
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
 
-.product-card .price {
-    font-size: 16px;
-    color: #ff6600;
-    margin-bottom: 10px;
-}
+    .product-card h3 {
+        margin-bottom: 10px;
+        font-size: 16px;
+        color: #333;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
 
-.product-card button {
-    padding: 10px 20px;
-    background-color: #ff6600;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: auto; /* ดันปุ่มลงไปที่ด้านล่าง */
-}
+    .product-card .price {
+        font-size: 18px;
+        color: #ff6600;
+        margin-bottom: 10px;
+    }
 
-.product-card button:hover {
-    background-color: #e65c00;
-}
+    .product-card .category {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 15px;
+    }
 
+    .product-card button {
+        padding: 10px 20px;
+        background-color: #ff6600;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .product-card button:hover {
+        background-color: #e65c00;
+    }
+
+    /* เอฟเฟกต์ลูกศรเมื่อโฮเวอร์ */
+    .product-card::after {
+        content: '→';
+        font-size: 24px;
+        color: #ff6600;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.3s, opacity 0.3s;
+        opacity: 0;
+    }
+
+    .product-card:hover::after {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    /* เพิ่มลิงก์รอบๆ การ์ด */
+    .product-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    /* เพิ่มเอฟเฟกต์เมื่อการ์ดโฮเวอร์ */
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
   </style>
 </head>
 <body>
@@ -134,18 +182,17 @@
         <div class="container-main">
             <!-- รายการสินค้า -->
             <div class="products">
-                <!-- Loop เพื่อแสดงสินค้าทั้งหมด -->
                 <% if (typeof books !== 'undefined' && books.length > 0) { %>
                     <% books.forEach(function(book) { %>
-                        <div class="product-card">
-                            <img src="<%= book.photo ? '/uploads/' + book.photo : 'placeholder.png' %>" alt="<%= book.Title %>">
-                            <h3><%= book.BookName %></h3>
-                            <p><strong>Author:</strong> <%= book.Author %></p>
-                            <p><strong>Category:</strong> <%= book.CategoryName %></p>
-                            <p class="price">$<%= book.Price %></p>
-                            <p><strong>Stock:</strong> <%= book.Stock %> available</p>
-                            <button>Add to Cart</button>
-                        </div>
+                        <a class="product-link" href="/books/<%= book.id %>">
+                            <div class="product-card">
+                                <img src="<%= book.photo ? '/uploads/' + book.photo : 'placeholder.png' %>" alt="<%= book.BookName %>">
+                                <h3><%= book.BookName %></h3>
+                                <div class="price">฿<%= book.Price %></div>
+                                <div class="category">หมวดหมู่: <%= book.CategoryName %></div>
+                                <button>เพิ่มไปยังรถเข็น</button>
+                            </div>
+                        </a>
                     <% }); %>
                 <% } else { %>
                     <p>No books available.</p>
@@ -153,7 +200,6 @@
             </div>
         </div>
     </main>
+    <%- include('partials/footer') %>
 </body>
 </html>
-
-<%- include('partials/footer') %>

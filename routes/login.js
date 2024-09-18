@@ -35,31 +35,33 @@ router.post('/', (req, res) => {
           // Password matched, set user session
           req.session.user = {
             username: user.username,
-            role: user.username === 'admin' ? 'admin' : 'user' // Example role check; customize as needed
+            role: user.type === 'admin' ? 'admin' : 'customer' // Checking user type (admin or customer)
           };
 
-          // Redirect based on user role
-          if (req.session.user.role === 'admin') {
-            var sql2 = 'SELECT * FROM books';
-            connection.query(sql2, (err, result) => {
+          // Query to get books for all users
+          var sql2 = 'SELECT * FROM books';
+          connection.query(sql2, (err, result) => {
             if (err) {
               console.error(err);
+              return res.status(500).send('Error retrieving books.');
+            }
+
+            req.session.books = result;
+
+            // Redirect based on user role
+            if (req.session.user.role === 'admin') {
+              res.render('useradmin', { 
+                books: req.session.books, 
+              });
+            } else if (req.session.user.role === 'customer') {
+              res.render('', { 
+                books: req.session.books, 
+                user: req.session.user // ส่งข้อมูล user ไปด้วย
+              });
             } else {
-              req.session.books = result;
-              res.render('useradmin', { books: req.session.books });
+              res.status(403).send('Access denied.');
             }
           });
-          } else {
-            var sql2 = 'SELECT * FROM books';
-            connection.query(sql2, (err, result) => {
-            if (err) {
-              console.error(err);
-            } else {
-              req.session.books = result;
-              res.render('', { books: req.session.books });
-            }
-          });
-          }
         } else {
           // Password did not match
           res.status(401).send('Invalid email or password.');

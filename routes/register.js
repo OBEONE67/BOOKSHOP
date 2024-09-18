@@ -17,9 +17,9 @@ router.post('/', async (req, res) => {
         // Hash the password using bcrypt
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // SQL query to insert a new user
-        var sql = 'INSERT INTO users (firstname, lastname, username, email, password, address, phone) VALUES (?, ?, ?, ?, ?, ?, ?)';
-        var values = [firstname, lastname, username, email, hashedPassword, address, phone];
+        // SQL query to insert a new user with type set as 'customer'
+        var sql = 'INSERT INTO users (firstname, lastname, username, email, password, address, phone, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        var values = [firstname, lastname, username, email, hashedPassword, address, phone, 'customer']; // Adding 'customer' as type
 
         // Execute the query
         connection.query(sql, values, (err, result) => {

@@ -86,7 +86,8 @@
 <body>
   <div class="register-container">
     <h2>สมัครสมาชิก</h2>
-    <form action="/register" method="POST">
+    <form action="/register" method="POST"> 
+
       <div class="form-group">
         <label for="firstname">ชื่อ</label>
         <input type="text" id="firstname" name="firstname" placeholder="กรอกชื่อของคุณ" required>
@@ -102,6 +103,10 @@
       <div class="form-group">
         <label for="password">รหัสผ่าน</label>
         <input type="password" id="password" name="password" placeholder="กรอกรหัสผ่านของคุณ" required>
+      </div>
+      <div class="form-group">
+        <label for="confirm_password">ยืนยันรหัสผ่าน</label>
+        <input type="password" id="confirm_password" name="confirm_password" placeholder="ยืนยันรหัสผ่านของคุณ" required>
       </div>
       <div class="form-group">
         <label for="email">อีเมล</label>
@@ -121,5 +126,18 @@
       </div>
     </form>
   </div>
+
+  <script>
+    const form = document.querySelector('form');
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirm_password');
+
+    form.addEventListener('submit', function(event) {
+      if (password.value !== confirmPassword.value) {
+        alert('รหัสผ่านไม่ตรงกัน กรุณาลองใหม่');
+        event.preventDefault();
+      }
+    });
+  </script>
 </body>
 </html>

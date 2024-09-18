@@ -1,9 +1,21 @@
 var express = require('express');
 var router = express.Router();
+var connection = require('../connect');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+// Route สำหรับแสดงรายการหนังสือทั้งหมด
+router.get('/', (req, res) => {
+  var sql = "SELECT * FROM books";
+
+  connection.query(sql, (err, results) => {
+      if (err) {
+          console.error(err);
+          return res.status(500).send("Server error");
+      }
+      
+      // ส่งข้อมูลหนังสือไปยัง view EJS แม้ผู้ใช้จะไม่ได้ล็อกอิน
+      res.render('index', { books: results });
+  });
 });
 
 /* GET login page. */
@@ -36,9 +48,10 @@ router.get('/useradmin', function(req, res, next) {
   res.render('useradmin', { title: 'useradmin' });
 });
 
+
 /* GET UserAdmin page. */
-router.get('/productList', function(req, res, next) {
-  res.render('productList', { title: 'productList' });
+router.get('/books/editbook.ejs', function(req, res, next) {
+  res.render('editbook', { title: 'editbook' });
 });
 
 

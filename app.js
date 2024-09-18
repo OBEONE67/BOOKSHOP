@@ -35,7 +35,7 @@ app.use('/uploads', express.static('uploads'));
 
 app.use(session({
   secret: 'test',
-  resave: true,
+  resave: false,
   saveUninitialized: true,
   cookie: { secure: false } // ใช้ secure: true ถ้าใช้ HTTPS 
 }))
