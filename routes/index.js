@@ -54,7 +54,10 @@ router.get('/books/editbook.ejs', function(req, res, next) {
   res.render('editbook', { title: 'editbook' });
 });
 
-
+/* GET cart page. */
+router.get('/cart', function(req, res, next) {
+  res.render('cart', { title: 'cart' });
+});
 
 
 

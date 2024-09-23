@@ -11,6 +11,7 @@ var registerRouter = require('./routes/register');
 var loginRouter = require('./routes/login');
 var logoutRouter = require('./routes/logout');
 var userAdminRouter = require('./routes/userAdmin');
+var cartRouter = require('./routes/cart');
 
 
 const app = express();
@@ -45,12 +46,21 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get('/cart', (req, res) => {
+  const cart = req.session.cart || []; // ดึงข้อมูลรถเข็นจาก session
+  res.render('cart', { cart: cart }); // ส่งข้อมูลไปยัง template
+});
+
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/userAdmin', userAdminRouter);
+app.use('/cart', cartRouter);
+
+
 
 
 // catch 404 and forward to error handler
@@ -68,5 +78,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
 
 module.exports = app;

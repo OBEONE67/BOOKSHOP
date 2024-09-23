@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตะกร้าสินค้า</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- ถ้ามีสไตล์ -->
+    <style>
+        body {
+            font-family: "Itim", cursive;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #ff6600;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: #ff6600;
+            padding: 10px 15px;
+            border: 1px solid #ff6600;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        a:hover {
+            background-color: #ff6600;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h2>ตะกร้าสินค้าของคุณ</h2>
+
+    <% if (!cart || cart.length === 0) { %>
+        <p>ยังไม่มีสินค้าที่เพิ่มเข้าตะกร้า</p>
+    <% } else { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>ชื่อหนังสือ</th>
+                    <th>ราคา</th>
+                    <th>จำนวน</th>
+                    <th>รวม</th>
+                    <th>ดำเนินการ</th> <!-- เพิ่มหัวข้อสำหรับปุ่มลบ -->
+                </tr>
+            </thead>
+            <tbody>
+                <% cart.forEach(item => { %>
+                    <tr>
+                        <td><%= item.BookName %></td>
+                        <td><%= item.Price %> บาท</td>
+                        <td><%= item.Quantity %></td>
+                        <td><%= (item.Price * item.Quantity).toFixed(2) %> บาท</td>
+                        <td>
+                            <form action="/cart/remove" method="POST">
+                                <input type="hidden" name="bookID" value="<%= item.BookID %>">
+                                <button type="submit">ลบ</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        
+        
+
+        <h3 class="total">รวมทั้งหมด: <%= cart.reduce((total, item) => total + (item.Price * item.Quantity), 0).toFixed(2) %> บาท</h3>
+
+        <a href="/checkout">ชำระเงิน</a>
+    <% } %>
+</body>
+</html>
