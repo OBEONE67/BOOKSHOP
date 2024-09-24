@@ -5,13 +5,14 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var registerRouter = require('./routes/register');
-var loginRouter = require('./routes/login');
-var logoutRouter = require('./routes/logout');
-var userAdminRouter = require('./routes/userAdmin');
-var cartRouter = require('./routes/cart');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const registerRouter = require('./routes/register');
+const loginRouter = require('./routes/login');
+const logoutRouter = require('./routes/logout');
+const userAdminRouter = require('./routes/userAdmin');
+const cartRouter = require('./routes/cart');
+
 
 
 const app = express();
@@ -59,6 +60,7 @@ app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/userAdmin', userAdminRouter);
 app.use('/cart', cartRouter);
+
 
 
 
