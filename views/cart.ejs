@@ -17,14 +17,15 @@
         h2 {
             color: #333;
             margin-bottom: 20px;
-            display: flex; /* ใช้ flexbox เพื่อจัดการตำแหน่ง */
-            justify-content: space-between; /* จัดให้เนื้อหาทั้งหมดอยู่ห่างกัน */
-            align-items: center; /* จัดแนวให้ตรงกลางในแนวตั้ง */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         th, td {
             padding: 10px;
@@ -49,28 +50,28 @@
         a {
             text-decoration: none;
             color: #ff6600;
-            padding: 5px 10px; /* ลดขนาด padding */
+            padding: 5px 10px;
             border: 1px solid #ff6600;
-            border-radius: 3px; /* ลดขนาด border radius */
+            border-radius: 3px;
             transition: background-color 0.3s, color 0.3s;
-            margin-top: 20px; /* เว้นระยะห่างด้านบน */
-            display: inline-block; /* ทำให้ปุ่มแสดงเป็นบล็อก */
-            font-size: 14px; /* ลดขนาดตัวอักษร */
+            margin-top: 20px;
+            display: inline-block;
+            font-size: 14px;
         }
         a:hover {
             background-color: #ff6600;
             color: white;
         }
         img {
-            max-width: 100px; /* กำหนดขนาดสูงสุดของรูปภาพ */
-            height: auto; /* ปรับความสูงอัตโนมัติเพื่อรักษาสัดส่วน */
+            max-width: 100px;
+            height: auto;
         }
     </style>
 </head>
 <body>
     <h2>
         ตะกร้าสินค้าของคุณ
-        <a href="/" class="back-button">กลับไปหน้าหลัก</a> <!-- ปุ่มกลับไปหน้าหลัก -->
+        <a href="/" class="back-button">กลับไปหน้าหลัก</a>
     </h2>
 
     <% if (!cart || cart.length === 0) { %>
@@ -79,30 +80,26 @@
         <table>
             <thead>
                 <tr>
-                    <th>รูปภาพ</th> <!-- เพิ่มหัวข้อรูปภาพ -->
+                    <th>รูปภาพ</th>
                     <th>ชื่อหนังสือ</th>
                     <th>ราคา</th>
                     <th>จำนวน</th>
                     <th>รวม</th>
-                    <th>ดำเนินการ</th> <!-- เพิ่มหัวข้อสำหรับปุ่มลบ -->
+                    <th>ดำเนินการ</th>
                 </tr>
             </thead>
             <tbody>
                 <% cart.forEach(item => { %>
                     <tr>
-                        <td>
-                            <% if (item.Photo) { %>
-                                <img src="<%= item.Photo %>" alt="<%= item.BookName %>"> <!-- แสดงรูปภาพ -->
-                            <% } else { %>
-                                <img src="/path/to/default-image.jpg" alt="No image available" style="width: 100px; height: auto;"> <!-- แสดงภาพดีฟอลต์ -->
-                            <% } %>
-                        </td>
+                            <td>
+                                <img src="/uploads/<%= item.photo || '/path/to/default-image.jpg' %>" alt="<%= item.BookName %>" style="width: 100px; height: auto;">
+                            </td>
                         <td><%= item.BookName %></td>
-                        <td><%= item.Price %> บาท</td>
+                        <td><%= item.Price.toFixed(2) %> บาท</td>
                         <td><%= item.Quantity %></td>
                         <td><%= (item.Price * item.Quantity).toFixed(2) %> บาท</td>
                         <td>
-                            <form action="/cart/remove" method="POST">
+                            <form action="/cart/remove" method="POST" onsubmit="return confirm('คุณแน่ใจว่าต้องการลบสินค้านี้?');">
                                 <input type="hidden" name="bookID" value="<%= item.BookID %>">
                                 <button type="submit">ลบ</button>
                             </form>
