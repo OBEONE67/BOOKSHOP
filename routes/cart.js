@@ -69,7 +69,7 @@ router.post('/', (req, res) => {
             });
         }
 
-        res.render('alert', { message: 'Added to cart successfully!', messageType: 'success', redirectUrl: '/cart' });
+        res.render('alert', { message: 'Added to cart successfully!', messageType: 'success', redirectUrl: '/' });
     });
 });
 
