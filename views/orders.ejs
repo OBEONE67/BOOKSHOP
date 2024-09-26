@@ -1,0 +1,83 @@
+<%- include('partials/header') %>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายการสั่งซื้อ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Itim", cursive;
+        }
+
+        main {
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .orders-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #fff;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .order {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .order:last-child {
+            border-bottom: none;
+        }
+
+        .order h3 {
+            margin: 10px 0;
+        }
+
+        .order p {
+            margin: 5px 0;
+        }
+
+        .total {
+            font-weight: bold;
+            color: #ff6600;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="orders-container">
+            <h2>รายการสั่งซื้อของคุณ</h2>
+            <% if (orders && orders.length > 0) { %>
+                <% orders.forEach(order => { %>
+                    <div class="order">
+                        <h3>Order ID: <%= order.OrderID %></h3>
+                        <p>วันที่สั่งซื้อ: <%= new Date(order.OrderDate).toLocaleDateString('th-TH') %></p>
+                        <p>จำนวน: <%= order.Quantity %></p>
+                        <p>หนังสือ: <%= order.BookID %></p>
+                        <!-- คุณอาจต้องเพิ่มการดึงราคาจากตารางหนังสือ -->
+                        <p class="total">ยอดรวม: ฿<%= (order.Quantity * fetchPrice(order.BookID)) %></p>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>คุณยังไม่มีรายการสั่งซื้อ</p>
+            <% } %>
+        </div>
+        
+    </main>
+    <%- include('partials/footer') %>
+</body>
+</html>

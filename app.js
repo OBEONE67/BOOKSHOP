@@ -12,6 +12,7 @@ const loginRouter = require('./routes/login');
 const logoutRouter = require('./routes/logout');
 const userAdminRouter = require('./routes/userAdmin');
 const cartRouter = require('./routes/cart');
+const orderRoutes = require('./routes/order');
 
 
 
@@ -60,6 +61,7 @@ app.use('/login', loginRouter);
 app.use('/logout', logoutRouter);
 app.use('/userAdmin', userAdminRouter);
 app.use('/cart', cartRouter);
+app.use('/order', orderRoutes);
 
 
 

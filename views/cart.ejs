@@ -66,6 +66,22 @@
             max-width: 100px;
             height: auto;
         }
+        button {
+            background-color: #ff4d4d; /* สีแดงสำหรับปุ่มลบ */
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px; /* ทำให้ขอบโค้งมน */
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease; /* เพิ่มเอฟเฟกต์การเปลี่ยนสี */
+        }
+        button:hover {
+            background-color: #e60000; /* เปลี่ยนสีเมื่อวางเมาส์ */
+        }
+        button:active {
+            background-color: #cc0000; /* เปลี่ยนสีเมื่อกดปุ่ม */
+        }
     </style>
 </head>
 <body>
@@ -91,9 +107,9 @@
             <tbody>
                 <% cart.forEach(item => { %>
                     <tr>
-                            <td>
-                                <img src="/uploads/<%= item.photo || '/path/to/default-image.jpg' %>" alt="<%= item.BookName %>" style="width: 100px; height: auto;">
-                            </td>
+                        <td>
+                            <img src="/uploads/<%= item.photo || '/path/to/default-image.jpg' %>" alt="<%= item.BookName %>" style="width: 100px; height: auto;">
+                        </td>
                         <td><%= item.BookName %></td>
                         <td><%= item.Price.toFixed(2) %> บาท</td>
                         <td><%= item.Quantity %></td>
@@ -101,7 +117,7 @@
                         <td>
                             <form action="/cart/remove" method="POST" onsubmit="return confirm('คุณแน่ใจว่าต้องการลบสินค้านี้?');">
                                 <input type="hidden" name="bookID" value="<%= item.BookID %>">
-                                <button type="submit">ลบ</button>
+                                <button type="submit">ลบ</button> <!-- ใช้สไตล์ที่กำหนด -->
                             </form>
                         </td>
                     </tr>
@@ -111,7 +127,9 @@
 
         <h3 class="total">รวมทั้งหมด: <%= cart.reduce((total, item) => total + (item.Price * item.Quantity), 0).toFixed(2) %> บาท</h3>
 
-        <a href="/checkout">ชำระเงิน</a>
+        <form action="/cart/checkorder" method="POST">
+            <button type="submit">ยืนยัน order</button>
+        </form>
     <% } %>
 </body>
 </html>

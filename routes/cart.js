@@ -4,23 +4,34 @@ var connection = require('../connect'); // นำเข้าการเชื�
 
 // POST route to add book to cart
 router.post('/', (req, res) => {
+    // ตรวจสอบว่าผู้ใช้ล็อกอินหรือยัง
+    if (!req.session.user) {
+        return res.render('alert', { message: 'Please login first', messageType: 'error', redirectUrl: '/login' });
+    }
+
     const bookID = req.body.bookID;
     const quantity = parseInt(req.body.quantity, 10) || 1;
     const userID = req.session.user.userid;
 
     if (!bookID || !userID) {
-        return res.status(400).send('Book ID and User ID are required');
+        return res.render('alert', { message: 'Book ID and User ID are required', messageType: 'error', redirectUrl: '/cart' });
     }
 
     const query = 'SELECT * FROM books WHERE BookID = ?';
     connection.query(query, [bookID], (err, results) => {
         if (err) {
-            return res.status(500).send('Database error');
+            console.error(err);
+            return res.render('alert', { message: 'Database error', messageType: 'error', redirectUrl: '/cart' });
         }
 
         const book = results[0];
         if (!book) {
-            return res.status(404).send('Book not found');
+            return res.render('alert', { message: 'Book not found', messageType: 'error', redirectUrl: '/cart' });
+        }
+
+        // ตรวจสอบ stock ก่อนที่จะเพิ่ม
+        if (book.Stock < quantity) {
+            return res.render('alert', { message: `Not enough stock. Available: ${book.Stock}`, messageType: 'error', redirectUrl: '/' });
         }
 
         if (!req.session.cart) {
@@ -32,11 +43,11 @@ router.post('/', (req, res) => {
             // หากมีอยู่แล้ว เพิ่มจำนวนโดยอัตโนมัติ
             existingBook.Quantity += quantity;
 
-            // อัปเดตฐานข้อมูล
             const updateQuery = 'UPDATE Cart SET Quantity = ? WHERE UserID = ? AND BookID = ?';
             connection.query(updateQuery, [existingBook.Quantity, userID, bookID], (err) => {
                 if (err) {
                     console.error(err);
+                    return res.render('alert', { message: 'Error updating cart', messageType: 'error', redirectUrl: '/cart' });
                 }
             });
         } else {
@@ -49,22 +60,26 @@ router.post('/', (req, res) => {
                 Quantity: quantity
             });
 
-            // บันทึกลงในฐานข้อมูล
             const insertQuery = 'INSERT INTO Cart (UserID, BookID, Quantity) VALUES (?, ?, ?)';
             connection.query(insertQuery, [userID, book.BookID, quantity], (err) => {
                 if (err) {
                     console.error(err);
+                    return res.render('alert', { message: 'Error adding to cart', messageType: 'error', redirectUrl: '/cart' });
                 }
             });
         }
 
-        // เปลี่ยนเส้นทางไปยังหน้า cart
-        res.redirect('/cart');
+        res.render('alert', { message: 'Added to cart successfully!', messageType: 'success', redirectUrl: '/cart' });
     });
 });
 
 // POST route to remove book from cart
 router.post('/remove', (req, res) => {
+    // ตรวจสอบว่าผู้ใช้ล็อกอินหรือยัง
+    if (!req.session.user) {
+        return res.redirect('/login?error=Please login first');
+    }
+
     const bookID = req.body.bookID;
     const userID = req.session.user.userid;
 
@@ -109,5 +124,58 @@ router.post('/remove', (req, res) => {
     }
 });
 
+router.post('/checkorder', (req, res) => {
+    const userID = req.session.user.userid;
+    const cart = req.session.cart; // ดึงข้อมูลตะกร้าสินค้า
+
+    // ตรวจสอบการเข้าสู่ระบบ
+    if (!userID) {
+        return res.render('alert', { message: 'กรุณาเข้าสู่ระบบก่อนทำการสั่งซื้อ', messageType: 'error', redirectUrl: '/login' });
+    }
+
+    // ตรวจสอบว่าตะกร้ามีข้อมูลหรือไม่
+    if (!cart || cart.length === 0) {
+        return res.render('alert', { message: 'ตะกร้าสินค้าไม่มีข้อมูล', messageType: 'error', redirectUrl: '/cart' });
+    }
+
+    // สร้างคำสั่งซื้อในฐานข้อมูลสำหรับแต่ละรายการในตะกร้า
+    const orderQueries = cart.map(item => {
+        const orderQuery = 'INSERT INTO Orders (OrderDate, Quantity, UserID, BookID) VALUES (NOW(), ?, ?, ?)';
+        return new Promise((resolve, reject) => {
+            connection.query(orderQuery, [item.Quantity, userID, item.BookID], (err) => {
+                if (err) {
+                    return reject(err);
+                }
+                resolve();
+            });
+        });
+    });
+
+    // รอให้คำสั่งซื้อทั้งหมดถูกบันทึก
+    Promise.all(orderQueries)
+        .then(() => {
+            // เคลียร์ตะกร้าสินค้าหลังจากยืนยัน
+            req.session.cart = [];
+
+            // สร้างคำสั่ง SQL เพื่อลบข้อมูลในตาราง Cart
+            const deleteCartQuery = 'DELETE FROM Cart WHERE UserID = ?';
+            return new Promise((resolve, reject) => {
+                connection.query(deleteCartQuery, [userID], (err) => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve();
+                });
+            });
+        })
+        .then(() => {
+            // ส่งข้อความยืนยันคำสั่งซื้อ
+            res.render('alert', { message: 'ยืนยันคำสั่งซื้อเรียบร้อยแล้ว!', messageType: 'success', redirectUrl: '/' });
+        })
+        .catch(err => {
+            console.error('Error during order saving:', err);
+            res.render('alert', { message: 'เกิดข้อผิดพลาดในการบันทึกคำสั่งซื้อ', messageType: 'error', redirectUrl: '/cart' });
+        });
+});
+
 module.exports = router;
-    

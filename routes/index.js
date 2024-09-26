@@ -49,7 +49,7 @@ router.get('/useradmin', function(req, res, next) {
 });
 
 
-/* GET UserAdmin page. */
+/* GET editbook page. */
 router.get('/books/editbook.ejs', function(req, res, next) {
   res.render('editbook', { title: 'editbook' });
 });
@@ -57,6 +57,11 @@ router.get('/books/editbook.ejs', function(req, res, next) {
 /* GET cart page. */
 router.get('/cart', function(req, res, next) {
   res.render('cart', { title: 'cart' });
+});
+
+/* GET order page. */
+router.get('/orders', function(req, res, next) {
+  res.render('orders', { title: 'orders' });
 });
 
 

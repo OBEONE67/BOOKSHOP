@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แจ้งเตือน</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- ถ้ามีไฟล์ CSS -->
+    <style>
+        * {
+            font-family: "Itim", cursive;
+        }
+        body {
+            font-family: "Itim", cursive;
+            background-color: #f9f9f9;
+            padding: 20px;
+            text-align: center;
+        }
+        .alert {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            display: inline-block;
+            width: 50%;
+        }
+        .alert-success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .alert-danger {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+        a {
+            text-decoration: none;
+            color: #ff6600;
+            padding: 10px 20px;
+            border: 1px solid #ff6600;
+            border-radius: 3px;
+            transition: background-color 0.3s, color 0.3s;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        a:hover {
+            background-color: #ff6600;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <% if (messageType === 'success') { %>
+        <div class="alert alert-success">
+            <h3><%= message %></h3>
+        </div>
+    <% } else if (messageType === 'error') { %>
+        <div class="alert alert-danger">
+            <h3><%= message %></h3>
+        </div>
+    <% } %>
+
+    <a href="<%= redirectUrl %>">Back</a>
+</body>
+</html>
