@@ -8,19 +8,25 @@
     <style>
         * {
             font-family: "Itim", cursive;
+            box-sizing: border-box;
         }
         body {
-            font-family: "Itim", cursive;
             background-color: #f9f9f9;
             padding: 20px;
             text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: white;
         }
         .alert {
             padding: 15px;
             margin: 20px 0;
             border-radius: 4px;
-            display: inline-block;
-            width: 50%;
         }
         .alert-success {
             background-color: #dff0d8;
@@ -30,33 +36,41 @@
             background-color: #f2dede;
             color: #a94442;
         }
+        h3 {
+            margin: 0;
+            font-size: 20px;
+        }
         a {
             text-decoration: none;
             color: #ff6600;
             padding: 10px 20px;
-            border: 1px solid #ff6600;
-            border-radius: 3px;
-            transition: background-color 0.3s, color 0.3s;
+            border: 2px solid #ff6600;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
             margin-top: 20px;
             display: inline-block;
+            font-size: 16px;
         }
         a:hover {
             background-color: #ff6600;
             color: white;
+            border-color: transparent; /* ซ่อนเส้นขอบเมื่อวางเมาส์ */
         }
     </style>
 </head>
 <body>
-    <% if (messageType === 'success') { %>
-        <div class="alert alert-success">
-            <h3><%= message %></h3>
-        </div>
-    <% } else if (messageType === 'error') { %>
-        <div class="alert alert-danger">
-            <h3><%= message %></h3>
-        </div>
-    <% } %>
+    <div class="container">
+        <% if (messageType === 'success') { %>
+            <div class="alert alert-success">
+                <h3><%= message %></h3>
+            </div>
+        <% } else if (messageType === 'error') { %>
+            <div class="alert alert-danger">
+                <h3><%= message %></h3>
+            </div>
+        <% } %>
 
-    <a href="<%= redirectUrl %>">Back</a>
+        <a href="<%= redirectUrl %>">กลับ</a>
+    </div>
 </body>
 </html>

@@ -59,10 +59,40 @@ router.get('/cart', function(req, res, next) {
   res.render('cart', { title: 'cart' });
 });
 
-/* GET order page. */
-router.get('/orders', function(req, res, next) {
-  res.render('orders', { title: 'orders' });
+/* GET orders page. */
+// Route สำหรับหน้า orders
+router.get('/orders', (req, res) => {
+  const userID = req.session.user ? req.session.user.userid : null;
+
+  // ตรวจสอบว่าผู้ใช้ได้เข้าสู่ระบบหรือไม่
+  if (!userID) {
+      return res.render('alert', { message: 'กรุณาเข้าสู่ระบบเพื่อดูรายการคำสั่งซื้อ', messageType: 'error', redirectUrl: '/login' });
+  }
+
+  // Query ดึงข้อมูลคำสั่งซื้อจากฐานข้อมูล พร้อมชื่อหนังสือ ราคา และรูปภาพ
+  const getOrderQuery = `
+      SELECT o.OrderID, o.OrderDate, o.Quantity, o.UserID, o.BookID, b.BookName, b.Price, b.photo
+      FROM Orders o
+      JOIN Books b ON o.BookID = b.BookID
+      WHERE o.UserID = ?
+      ORDER BY o.OrderDate DESC`;
+  
+  connection.query(getOrderQuery, [userID], (err, orders) => {
+      if (err) {
+          console.error('Error retrieving orders:', err);
+          return res.render('alert', { message: 'เกิดข้อผิดพลาดในการดึงข้อมูลคำสั่งซื้อ', messageType: 'error', redirectUrl: '/' });
+      }
+
+      // ส่งข้อมูลคำสั่งซื้อไปที่ orders.ejs
+      res.render('orders', { orders });
+  });
 });
+
+/* GET cart page. */
+router.get('/payment', function(req, res, next) {
+  res.render('payment', { title: 'payment' });
+});
+
 
 
 

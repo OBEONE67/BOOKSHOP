@@ -1,83 +1,178 @@
-<%- include('partials/header') %>
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>รายการสั่งซื้อ</title>
+    <title>รายการคำสั่งซื้อของคุณ</title>
+    <link rel="stylesheet" href="/styles.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
-
+    </style>
+    <style>
+        /* สไตล์เพิ่มเติม */
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
             font-family: "Itim", cursive;
+            box-sizing: border-box;
         }
-
-        main {
-            padding: 20px;
+        body {
             background-color: #f9f9f9;
-        }
-
-        .orders-container {
-            max-width: 800px;
-            margin: 0 auto;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background: #fff;
             padding: 20px;
-        }
-
-        h2 {
-            margin-bottom: 20px;
             text-align: center;
         }
-
-        .order {
-            border-bottom: 1px solid #ddd;
-            padding: 10px 0;
+        h1 {
+            color: #333;
         }
-
-        .order:last-child {
-            border-bottom: none;
+        .logo img {
+            max-width: 150px; /* กำหนดความกว้างสูงสุดของโลโก้ */
+            height: auto; /* ให้รักษาสัดส่วนของโลโก้ */
         }
-
-        .order h3 {
-            margin: 10px 0;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-
-        .order p {
-            margin: 5px 0;
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
         }
-
-        .total {
-            font-weight: bold;
+        th {
+            background-color: #ff6600;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        img {
+            max-width: 100px; /* ขนาดรูปภาพ */
+            height: auto;
+        }
+        .back-button-container {
+            margin-top: 20px;
+        }
+        a {
+            text-decoration: none;
             color: #ff6600;
+            padding: 10px 20px;
+            border: 2px solid #ff6600;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        a:hover {
+            background-color: #ff6600;
+            color: white;
+            border-color: transparent;
+        }
+        .total-container {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .payment-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .payment-button:hover {
+            background-color: #e65c00;
+        }
+        .cancel-button {
+            padding: 5px 10px;
+            background-color: #ff3b3b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .cancel-button:hover {
+            background-color: #e63030;
+        }
+        .cancel-all-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #ff3b3b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .cancel-all-button:hover {
+            background-color: #e63030;
         }
     </style>
 </head>
 <body>
-    <main>
-        <div class="orders-container">
-            <h2>รายการสั่งซื้อของคุณ</h2>
-            <% if (orders && orders.length > 0) { %>
-                <% orders.forEach(order => { %>
-                    <div class="order">
-                        <h3>Order ID: <%= order.OrderID %></h3>
-                        <p>วันที่สั่งซื้อ: <%= new Date(order.OrderDate).toLocaleDateString('th-TH') %></p>
-                        <p>จำนวน: <%= order.Quantity %></p>
-                        <p>หนังสือ: <%= order.BookID %></p>
-                        <!-- คุณอาจต้องเพิ่มการดึงราคาจากตารางหนังสือ -->
-                        <p class="total">ยอดรวม: ฿<%= (order.Quantity * fetchPrice(order.BookID)) %></p>
-                    </div>
-                <% }); %>
-            <% } else { %>
-                <p>คุณยังไม่มีรายการสั่งซื้อ</p>
-            <% } %>
-        </div>
+    <div class="logo">
+        <img src="https://img2.pic.in.th/pic/LOGO-Photoroom.png" alt="BookstoreLogo">
+    </div>
+    <h1>รายการคำสั่งซื้อของคุณ</h1>
+
+    <% if (orders === undefined || orders.length === undefined) { %>
+        <p>เกิดข้อผิดพลาดในการดึงข้อมูลคำสั่งซื้อ</p>
         
-    </main>
-    <%- include('partials/footer') %>
+    <% } else if (orders.length === 0) { %>
+        <p>ยังไม่มีคำสั่งซื้อ</p>
+        <div class="back-button-container">
+            <a href="/" class="back-button">กลับไปหน้าหลัก</a>
+        </div>
+    <% } else { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>ชื่อหนังสือ</th>
+                    <th>ราคา</th>
+                    <th>Quantity</th>
+                    <th>รูปภาพ</th>
+                    <th>Actions</th> <!-- เพิ่มคอลัมน์สำหรับการกระทำ -->
+                </tr>
+            </thead>
+            <tbody>
+                <% let totalAmount = 0; %> <!-- ตัวแปรสำหรับเก็บยอดรวม -->
+                <% orders.forEach(order => { %>
+                    <tr>
+                        <td><%= order.OrderID %></td>
+                        <td><%= new Date(order.OrderDate).toLocaleDateString() %></td>
+                        <td><%= order.BookName %></td>
+                        <td><%= order.Price.toFixed(2) %> บาท</td>
+                        <td><%= order.Quantity %></td>
+                        <td><img src="/uploads/<%= order.photo || 'path/to/default-image.jpg' %>" alt="<%= order.BookName %>"></td>
+                        <td>
+                            <form action="orders/cancel-order" method="POST" style="display:inline;">
+                                <input type="hidden" name="orderId" value="<%= order.OrderID %>">
+                                <button type="submit" class="cancel-button" onclick="return confirm('คุณแน่ใจว่าจะยกเลิกคำสั่งซื้อนี้หรือไม่?');">ยกเลิก</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% totalAmount += order.Price * order.Quantity; %> <!-- คำนวณยอดรวม -->
+                <% }) %>
+            </tbody>
+        </table>
+
+        <div class="total-container">
+            <strong>ยอดรวมทั้งหมด: <%= totalAmount.toFixed(2) %> บาท</strong>
+        </div>
+
+        <button class="payment-button" onclick="location.href='/payment'">ทำการชำระ</button> <!-- ปุ่มสำหรับทำการชำระ -->
+        
+        <form action="orders/cancel-all" method="POST" style="display:inline;">
+            <button type="submit" class="cancel-all-button" onclick="return confirm('คุณแน่ใจว่าจะยกเลิกคำสั่งซื้อทั้งหมดหรือไม่?');">ยกเลิกคำสั่งซื้อทั้งหมด</button>
+        </form>
+        <div class="back-button-container">
+            <a href="/" class="back-button">กลับไปหน้าหลัก</a>
+        </div>
+    <% } %>
 </body>
 </html>

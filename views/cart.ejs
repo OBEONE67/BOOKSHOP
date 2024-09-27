@@ -6,6 +6,9 @@
     <title>ตะกร้าสินค้า</title>
     <link rel="stylesheet" href="/styles.css"> <!-- ถ้ามีสไตล์ -->
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+    </style>
+    <style>
         * {
             font-family: "Itim", cursive;
         }
@@ -20,6 +23,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+        .logo {
+            text-align: center; /* จัดกลาง */
+            margin-bottom: 20px; /* ระยะห่างด้านล่างของโลโก้ */
         }
         table {
             width: 100%;
@@ -63,7 +70,7 @@
             color: white;
         }
         img {
-            max-width: 100px;
+            max-width: 150px;
             height: auto;
         }
         button {
@@ -85,6 +92,9 @@
     </style>
 </head>
 <body>
+    <div class="logo">
+        <img src="https://img2.pic.in.th/pic/LOGO-Photoroom.png" alt="Bookstore Logo">
+    </div>
     <h2>
         ตะกร้าสินค้าของคุณ
         <a href="/" class="back-button">กลับไปหน้าหลัก</a>

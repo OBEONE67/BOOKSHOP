@@ -68,20 +68,36 @@ router.post('/', (req, res) => {
 
               req.session.cart = cartItems; // เก็บข้อมูลตะกร้าใน session
 
-              // Redirect based on user role
-              if (req.session.user.role === 'admin') {
-                res.render('useradmin', { 
-                  books: req.session.books, 
-                });
-              } else if (req.session.user.role === 'customer') {
-                res.render('', { // เปลี่ยนให้เป็นชื่อไฟล์ EJS สำหรับลูกค้า
-                  books: req.session.books, 
-                  cartItems: req.session.cart, // ส่งข้อมูลตะกร้าไปด้วย
-                  user: req.session.user // ส่งข้อมูล user ไปด้วย
-                });
-              } else {
-                res.status(403).send('Access denied.');
-              }
+              // Query to get user's orders after successful login
+              var sql4 = `SELECT OrderID, OrderDate, Quantity, BookID 
+                          FROM Orders 
+                          WHERE UserID = ? ORDER BY OrderDate DESC`;
+
+              connection.query(sql4, [user.userid], (err, orders) => {
+                if (err) {
+                  console.error(err);
+                  return res.status(500).send('Error retrieving orders.');
+                }
+
+                req.session.orders = orders; // เก็บข้อมูลคำสั่งซื้อใน session
+
+                // Redirect based on user role
+                if (req.session.user.role === 'admin') {
+                  res.render('useradmin', { 
+                    books: req.session.books, 
+                  });
+                } else if (req.session.user.role === 'customer') {
+                  // ใน route ที่ส่งไปยัง orders.ejs
+                  res.render('', { 
+                    books: req.session.books, 
+                    cartItems: req.session.cart, 
+                    orders: req.session.orders || [], // ใช้ค่าพื้นฐานเป็นอาร์เรย์ถ้าไม่มีกำหนด
+                    user: req.session.user 
+                  });
+                } else {
+                  res.status(403).send('Access denied.');
+                }
+              });
             });
           });
         } else {

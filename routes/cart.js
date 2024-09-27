@@ -154,9 +154,6 @@ router.post('/checkorder', (req, res) => {
     // รอให้คำสั่งซื้อทั้งหมดถูกบันทึก
     Promise.all(orderQueries)
         .then(() => {
-            // เคลียร์ตะกร้าสินค้าหลังจากยืนยัน
-            req.session.cart = [];
-
             // สร้างคำสั่ง SQL เพื่อลบข้อมูลในตาราง Cart
             const deleteCartQuery = 'DELETE FROM Cart WHERE UserID = ?';
             return new Promise((resolve, reject) => {
@@ -164,18 +161,32 @@ router.post('/checkorder', (req, res) => {
                     if (err) {
                         return reject(err);
                     }
+                    // เคลียร์ตะกร้าสินค้าหลังจากยืนยัน
+                    req.session.cart = [];
                     resolve();
                 });
             });
         })
         .then(() => {
-            // ส่งข้อความยืนยันคำสั่งซื้อ
-            res.render('alert', { message: 'ยืนยันคำสั่งซื้อเรียบร้อยแล้ว!', messageType: 'success', redirectUrl: '/' });
+            // ดึงข้อมูลคำสั่งซื้อที่ถูกสร้างขึ้นเพื่อแสดงในหน้า cart
+            const getOrderQuery = 'SELECT * FROM Orders WHERE UserID = ? ORDER BY OrderDate DESC';
+            connection.query(getOrderQuery, [userID], (err, orders) => {
+                if (err) {
+                    console.error('Error retrieving orders:', err);
+                    return res.render('alert', { message: 'เกิดข้อผิดพลาดในการดึงข้อมูลคำสั่งซื้อ', messageType: 'error', redirectUrl: '/' });
+                }
+
+                // แสดงข้อมูลคำสั่งซื้อในหน้า cart
+                res.render('cart', { cart: [], orders }); // ส่ง cart ที่ว่างเปล่าและ orders ไปยังหน้า cart
+            });
+
         })
         .catch(err => {
             console.error('Error during order saving:', err);
             res.render('alert', { message: 'เกิดข้อผิดพลาดในการบันทึกคำสั่งซื้อ', messageType: 'error', redirectUrl: '/cart' });
         });
 });
+
+
 
 module.exports = router;

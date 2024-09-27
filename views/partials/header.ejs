@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BookShop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
 
@@ -88,13 +89,13 @@
         }
         
         .cart-icon {
-            font-size: 24px;
-            color: #333;
-            cursor: pointer;
+            font-size: 24px; /* ขนาดของไอคอน */
+            margin: 10px;
+            color: #ff6600; /* สีของไอคอน */
+            transition: color 0.3s;
         }
-        
         .cart-icon:hover {
-            color: #ff6600;
+            color: #e65c00; /* สีเมื่อเลื่อนเมาส์ */
         }
         
         /* จัดวางให้ช่องค้นหาและปุ่ม logout อยู่ในแถวเดียวกัน */
@@ -332,23 +333,24 @@
                     <button><a href="/login" class="btn">เข้าสู่ระบบ</a></button>
                 <% } %>
                 <a href="/cart" class="cart-icon">
-                    🛒
+                    <i class="fas fa-shopping-cart"></i> <!-- ไอคอนรถเข็น -->
                 </a>
                 <a href="/orders" class="cart-icon">
-                    <img src="https://img.icons8.com/material-outlined/24/000000/box.png" alt="กล่อง">
+                    <i class="fas fa-box"></i> <!-- ไอคอนกล่อง -->
                 </a>
             </div>
         </div>
     </header>
     <section class="categories">
+        <!-- <h2>หมวดหมู่หนังสือ</h2> -->
         <h2>หมวดหมู่หนังสือ</h2>
-        <div class="category-list">
+        <!-- <div class="category-list">
             <a href="/BOOKTYPE1"><div class="category-item">นิยาย</div></a>
             <div class="category-item">การ์ตูน</div>
             <div class="category-item">การเรียนรู้</div>
             <div class="category-item">ประวัติศาสตร์</div>
             <div class="category-item">วรรณกรรม</div>
-        </div>
+        </div> -->
     </section>
 </body>
 </html>

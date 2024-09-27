@@ -135,10 +135,11 @@
     <main>
         <div class="container-main">
             <div class="products">
-                <% if (typeof books !== 'undefined' && books.length > 0) { %>
+                <% if (typeof books !== 'undefined' && books.length > 0) { %> 
                     <% books.forEach(function(book) { %>
                         <div class="product-card">
-                            <a class="product-link" href="/books/<%= book.id %>">
+                                                        <!-- href="/books/<%= book.id %>" -->
+                            <a class="product-link" href="#">
                                 <img src="<%= book.photo ? '/uploads/' + book.photo : 'placeholder.png' %>" alt="<%= book.BookName %>">
                                 <h3><%= book.BookName %></h3>
                                 <div class="price">฿<%= book.Price %></div>
