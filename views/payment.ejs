@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>หน้าชำระเงิน</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        /* สไตล์เพิ่มเติม */
+        body {
+            background-color: #f9f9f9;
+            padding: 20px;
+            text-align: center;
+            font-family: "Itim", cursive;
+        }
+        h1 {
+            color: #333;
+        }
+        .total-container {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: #333;
+        }
+        .payment-button {
+            padding: 10px 20px;
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .payment-button:hover {
+            background-color: #e65c00;
+        }
+        .cancel-button {
+            padding: 5px 10px;
+            background-color: #ff3b3b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .cancel-button:hover {
+            background-color: #e63030;
+        }
+    </style>
+</head>
+<body>
+    <h1>ข้อมูลการชำระเงิน</h1>
+    
+    <div class="total-container">
+        <strong>ยอดรวมที่ต้องชำระ: <%= totalAmount.toFixed(2) %> บาท</strong>
+    </div>
+
+    <h2>กรุณากรอกข้อมูลการชำระเงินของคุณ</h2>
+    
+    <form action="/payment/confirm" method="POST">
+        <input type="hidden" name="totalAmount" value="<%= totalAmount %>">
+        <label for="paymentMethod">วิธีการชำระเงิน:</label>
+        <select name="paymentMethod" required>
+            <option value="creditCard">บัตรเครดิต</option>
+            <option value="paypal">PayPal</option>
+            <!-- เพิ่มวิธีการชำระเงินเพิ่มเติมถ้าต้องการ -->
+        </select>
+        <button type="submit">ยืนยันการชำระเงิน</button>
+    </form>
+
+    <form action="/" method="GET" style="display:inline;">
+        <button type="submit" class="cancel-button">ยกเลิกการชำระเงิน</button>
+    </form>
+</body>
+</html>

@@ -120,7 +120,6 @@
 
     <% if (orders === undefined || orders.length === undefined) { %>
         <p>เกิดข้อผิดพลาดในการดึงข้อมูลคำสั่งซื้อ</p>
-        
     <% } else if (orders.length === 0) { %>
         <p>ยังไม่มีคำสั่งซื้อ</p>
         <div class="back-button-container">
@@ -165,7 +164,11 @@
             <strong>ยอดรวมทั้งหมด: <%= totalAmount.toFixed(2) %> บาท</strong>
         </div>
 
-        <button class="payment-button" onclick="location.href='/payment'">ทำการชำระ</button> <!-- ปุ่มสำหรับทำการชำระ -->
+        <!-- ฟอร์มสำหรับการทำการชำระเงิน -->
+        <form action="/payment" method="GET" style="display:inline;">
+            <input type="hidden" name="totalAmount" value="<%= totalAmount.toFixed(2) %>"> <!-- ส่งยอดรวมไปด้วย -->
+            <button type="submit" class="payment-button">ทำการชำระ</button> <!-- ปุ่มสำหรับทำการชำระ -->
+        </form>
         
         <form action="orders/cancel-all" method="POST" style="display:inline;">
             <button type="submit" class="cancel-all-button" onclick="return confirm('คุณแน่ใจว่าจะยกเลิกคำสั่งซื้อทั้งหมดหรือไม่?');">ยกเลิกคำสั่งซื้อทั้งหมด</button>

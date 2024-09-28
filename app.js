@@ -13,7 +13,7 @@ const logoutRouter = require('./routes/logout');
 const userAdminRouter = require('./routes/userAdmin');
 const cartRouter = require('./routes/cart');
 const ordersRoutes = require('./routes/orders');
-
+const paymentRoutes = require('./routes/payment');
 
 
 const app = express();
@@ -62,7 +62,7 @@ app.use('/logout', logoutRouter);
 app.use('/userAdmin', userAdminRouter);
 app.use('/cart', cartRouter);
 app.use('/orders', ordersRoutes);
-
+app.use('/payment', paymentRoutes);
 
 
 
