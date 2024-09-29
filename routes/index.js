@@ -28,6 +28,16 @@ router.get('/BOOKTYPE1', function(req, res, next) {
   res.render('BOOKTYPE1', { title: 'Express' });
 });
 
+/* GET about page. */
+router.get('/about', function(req, res, next) {
+  res.render('about', { title: 'about' });
+});
+
+/* GET contact page. */
+router.get('/contact', function(req, res, next) {
+  res.render('contact', { title: 'contact' });
+});
+
 /* GET register page. */
 router.get('/register', function(req, res, next) {
   res.render('register', { title: 'register' });
@@ -167,6 +177,22 @@ router.get('/completed-orders', (req, res) => {
 });
 
 
+// Route สำหรับหน้า payment-info
+router.get('/payment-info', (req, res) => {
+  if (!req.session.user) {
+      return res.redirect('/login'); // ถ้ายังไม่ได้ล็อกอินให้ส่งไปหน้าล็อกอิน
+  }
+
+  const userID = req.session.user.userid; // ดึง UserID จาก session
+
+  connection.query('SELECT * FROM payments WHERE UserID = ?', [userID], (error, payments) => {
+      if (error) {
+          console.error(error);
+          return res.status(500).send('Server error');
+      }
+      res.render('payment-info', { payments }); // ส่งข้อมูลไปยังหน้า payment-info
+  });
+});
 
 
 module.exports = router;

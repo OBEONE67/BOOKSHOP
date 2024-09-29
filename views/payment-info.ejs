@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ข้อมูลการชำระเงิน</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css"> <!-- ลิงก์ไปยัง CSS ของคุณ -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+        
+        * {
+            font-family: "Itim", cursive;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .payment-info {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        thead {
+            background-color: #ff5722; /* สีส้ม */
+            color: white;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .back-button {
+            background-color: #ff5722; /* สีส้ม */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .back-button:hover {
+            background-color: #e64a19; /* สีส้มเข้มเมื่อ hover */
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>ข้อมูลการชำระเงิน</h1>
+    </header>
+    <section class="payment-info">
+        <table>
+            <thead>
+                <tr>
+                    <th>Payment Date</th>
+                    <th>Quantity</th>
+                    <th>Payment Method</th>
+                    <th>Status</th>
+                    <th>Transaction ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (Array.isArray(payments) && payments.length > 0) { %>
+                    <% payments.forEach(payment => { %>
+                        <tr>
+                            <td><%= payment.PaymentDate %></td>
+                            <td><%= payment.Quantity %></td>
+                            <td><%= payment.PaymentMethod %></td>
+                            <td><%= payment.Status %></td>
+                            <td><%= payment.TransactionID %></td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="5">ไม่มีข้อมูลการชำระเงิน</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <button class="back-button" onclick="window.location.href='/';">กลับสู่หน้าหลัก</button>
+    </section>
+</body>
+</html>

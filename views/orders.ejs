@@ -129,11 +129,10 @@
         <table>
             <thead>
                 <tr>
-                    <th>Order ID</th>
                     <th>Order Date</th>
                     <th>ชื่อหนังสือ</th>
                     <th>ราคา</th>
-                    <th>Quantity</th>
+                    <th>จำนวน</th>
                     <th>รูปภาพ</th>
                     <th>Actions</th> <!-- เพิ่มคอลัมน์สำหรับการกระทำ -->
                 </tr>
@@ -142,7 +141,6 @@
                 <% let totalAmount = 0; %> <!-- ตัวแปรสำหรับเก็บยอดรวม -->
                 <% orders.forEach(order => { %>
                     <tr>
-                        <td><%= order.OrderID %></td>
                         <td><%= new Date(order.OrderDate).toLocaleDateString() %></td>
                         <td><%= order.BookName %></td>
                         <td><%= order.Price.toFixed(2) %> บาท</td>
@@ -170,9 +168,9 @@
             <button type="submit" class="payment-button">ทำการชำระ</button> <!-- ปุ่มสำหรับทำการชำระ -->
         </form>
         
-        <form action="orders/cancel-all" method="POST" style="display:inline;">
+        <!-- <form action="orders/cancel-all" method="POST" style="display:inline;">
             <button type="submit" class="cancel-all-button" onclick="return confirm('คุณแน่ใจว่าจะยกเลิกคำสั่งซื้อทั้งหมดหรือไม่?');">ยกเลิกคำสั่งซื้อทั้งหมด</button>
-        </form>
+        </form> -->
         <div class="back-button-container">
             <a href="/" class="back-button">กลับไปหน้าหลัก</a>
         </div>

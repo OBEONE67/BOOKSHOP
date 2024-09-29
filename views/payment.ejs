@@ -15,32 +15,54 @@
         }
         h1 {
             color: #333;
+            margin-bottom: 20px;
+        }
+        .payment-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 400px;
+            margin: auto;
         }
         .total-container {
-            margin-top: 20px;
+            margin: 20px 0;
             font-size: 1.5em;
             color: #333;
         }
-        .payment-button {
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
+            color: #555;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        .payment-button, .cancel-button {
             padding: 10px 20px;
-            background-color: #ff6600;
-            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
+            font-size: 1em;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .payment-button {
+            background-color: #ff6600;
+            color: white;
         }
         .payment-button:hover {
             background-color: #e65c00;
         }
         .cancel-button {
-            padding: 5px 10px;
             background-color: #ff3b3b;
             color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
         }
         .cancel-button:hover {
             background-color: #e63030;
@@ -50,25 +72,28 @@
 <body>
     <h1>ข้อมูลการชำระเงิน</h1>
     
-    <div class="total-container">
-        <strong>ยอดรวมที่ต้องชำระ: <%= totalAmount.toFixed(2) %> บาท</strong>
+    <div class="payment-container">
+        <div class="total-container">
+            <strong>ยอดรวมที่ต้องชำระ: <%= totalAmount.toFixed(2) %> บาท</strong>
+        </div>
+
+        <h2>กรุณากรอกข้อมูลการชำระเงินของคุณ</h2>
+        
+        <form action="/payment/confirm" method="POST">
+            <input type="hidden" name="totalAmount" value="<%= totalAmount %>">
+            <label for="paymentMethod">วิธีการชำระเงิน:</label>
+            <select name="paymentMethod" required>
+                <option value="Credit Card">Credit Card</option>
+                <option value="PayPal">PayPal</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <!-- เพิ่มวิธีการชำระเงินเพิ่มเติมถ้าต้องการ -->
+            </select>
+            <button type="submit" class="payment-button">ยืนยันการชำระเงิน</button>
+        </form>
+
+        <form action="/orders" method="GET" style="display:inline;">
+            <button type="submit" class="cancel-button">ยกเลิกการชำระเงิน</button>
+        </form>
     </div>
-
-    <h2>กรุณากรอกข้อมูลการชำระเงินของคุณ</h2>
-    
-    <form action="/payment/confirm" method="POST">
-        <input type="hidden" name="totalAmount" value="<%= totalAmount %>">
-        <label for="paymentMethod">วิธีการชำระเงิน:</label>
-        <select name="paymentMethod" required>
-            <option value="creditCard">บัตรเครดิต</option>
-            <option value="paypal">PayPal</option>
-            <!-- เพิ่มวิธีการชำระเงินเพิ่มเติมถ้าต้องการ -->
-        </select>
-        <button type="submit">ยืนยันการชำระเงิน</button>
-    </form>
-
-    <form action="/" method="GET" style="display:inline;">
-        <button type="submit" class="cancel-button">ยกเลิกการชำระเงิน</button>
-    </form>
 </body>
 </html>

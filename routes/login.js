@@ -4,6 +4,7 @@ var connection = require('../connect'); // นำเข้าการเชื�
 var bcrypt = require('bcrypt'); // นำเข้า bcrypt สำหรับการเปรียบเทียบรหัสผ่าน
 
 // Handle login POST request
+// Handle login POST request
 router.post('/', (req, res) => {
   var { email, password } = req.body;
 
@@ -42,6 +43,25 @@ router.post('/', (req, res) => {
           };
 
           console.log('User session set:', req.session.user); // ตรวจสอบข้อมูลเซสชัน
+
+          // Log for admin login
+          if (req.session.user.role === 'admin') {
+            console.log(`Admin logged in: ${req.session.user.username} (UserID: ${req.session.user.userid})`);
+
+            // Get current date and time
+            const loginTime = new Date();
+            console.log(`Login time: ${loginTime}`); // แสดงเวลาใน log
+
+            // Insert login time, email, and password into a log table in the database
+            var logSql = 'INSERT INTO admin_logs (UserID, Email, Password, LoginTime) VALUES (?, ?, ?, ?)';
+            connection.query(logSql, [user.userid, email, password, loginTime], (err) => {
+              if (err) {
+                console.error('Error logging login time:', err);
+              } else {
+                console.log('Login time, email, and password logged successfully for admin.');
+              }
+            });
+          }
 
           // Query to get books for all users
           var sql2 = 'SELECT * FROM books';
@@ -88,7 +108,7 @@ router.post('/', (req, res) => {
                   });
                 } else if (req.session.user.role === 'customer') {
                   // ใน route ที่ส่งไปยัง orders.ejs
-                  res.render('', { 
+                  res.render('', { // ปรับชื่อ template ตามที่คุณต้องการ
                     books: req.session.books, 
                     cartItems: req.session.cart, 
                     orders: req.session.orders || [], // ใช้ค่าพื้นฐานเป็นอาร์เรย์ถ้าไม่มีกำหนด
@@ -111,5 +131,6 @@ router.post('/', (req, res) => {
     }
   });
 });
+
 
 module.exports = router;

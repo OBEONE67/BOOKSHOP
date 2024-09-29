@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ติดต่อเรา</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css"> <!-- ลิงก์ไปยัง CSS ของคุณ -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+
+        * {
+            font-family: "Itim", cursive;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .contact-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .contact-content {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .contact-form {
+            margin-top: 20px;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .contact-form button {
+            background-color: #ff5722; /* สีส้ม */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .contact-form button:hover {
+            background-color: #e64a19; /* สีส้มเข้มเมื่อ hover */
+        }
+
+        .back-button {
+            background-color: #ff5722; 
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #e64a19; /* สีฟ้าเข้มเมื่อ hover */
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>ติดต่อเรา</h1>
+    </header>
+    <section class="contact-section">
+        <div class="contact-content">
+            <h2>เรายินดีที่จะให้บริการคุณ!</h2>
+            <p>
+                หากคุณมีคำถามหรือข้อสงสัยเกี่ยวกับร้านหนังสือของเรา กรุณาติดต่อเราผ่านแบบฟอร์มด้านล่างนี้
+                หรือส่งอีเมลถึงเราได้ที่ <strong>info@bookstore.com</strong>
+            </p>
+            <p>
+                หรือคุณสามารถติดต่อเราผ่านช่องทางโซเชียลมีเดียของเราได้ที่:
+            </p>
+            <ul>
+                <li><i class="fab fa-facebook"></i> <a href="#">Facebook</a></li>
+                <li><i class="fab fa-instagram"></i> <a href="#">Instagram</a></li>
+                <li><i class="fab fa-twitter"></i> <a href="#">Twitter</a></li>
+            </ul>
+        </div>
+
+        <div class="contact-form">
+            <h3>ส่งข้อความถึงเรา</h3>
+            <form action="/send-message" method="POST">
+                <input type="text" name="name" placeholder="ชื่อของคุณ" required>
+                <input type="email" name="email" placeholder="อีเมลของคุณ" required>
+                <textarea name="message" rows="5" placeholder="ข้อความของคุณ" required></textarea>
+                <button type="submit">ส่งข้อความ</button>
+            </form>
+        </div>
+        
+        <!-- ปุ่มกลับไปหน้าหลัก -->
+        <button class="back-button" onclick="window.location.href='/';">กลับไปหน้าหลัก</button>
+    </section>
+</body>
+</html>

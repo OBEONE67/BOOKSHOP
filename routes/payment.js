@@ -39,16 +39,9 @@ router.post('/confirm', (req, res) => {
             req.session.orders = req.session.orders.filter(order => !orderIdArray.includes(order.OrderID));
 
             // ส่งผู้ใช้ไปยังหน้าแสดงผลการชำระเงินสำเร็จ
-            res.redirect('/'); // เปลี่ยนเส้นทางไปยังหน้า success
+            res.render('alert', { message: 'ชำระเงินสำเร็จ', messageType: 'success', redirectUrl: '/' });
         });
     });
 });
-
-
-
-
-
-
-
 
 module.exports = router;
