@@ -115,23 +115,31 @@
                 </tr>
             </thead>
             <tbody>
-                <% cart.forEach(item => { %>
+                <% cart.forEach(item=> { %>
                     <tr>
                         <td>
-                            <img src="/uploads/<%= item.photo || '/path/to/default-image.jpg' %>" alt="<%= item.BookName %>" style="width: 100px; height: auto;">
+                            <img src="<%= item.Photo %>" alt="<%= item.BookName %>" style="width: 100px; height: auto;">
                         </td>
-                        <td><%= item.BookName %></td>
-                        <td><%= item.Price.toFixed(2) %> บาท</td>
-                        <td><%= item.Quantity %></td>
-                        <td><%= (item.Price * item.Quantity).toFixed(2) %> บาท</td>
+                        <td>
+                            <%= item.BookName %>
+                        </td>
+                        <td>
+                            <%= item.Price.toFixed(2) %> บาท
+                        </td>
+                        <td>
+                            <%= item.Quantity %>
+                        </td>
+                        <td>
+                            <%= (item.Price * item.Quantity).toFixed(2) %> บาท
+                        </td>
                         <td>
                             <form action="/cart/remove" method="POST" onsubmit="return confirm('คุณแน่ใจว่าต้องการลบสินค้านี้?');">
                                 <input type="hidden" name="bookID" value="<%= item.BookID %>">
-                                <button type="submit">ลบ</button> <!-- ใช้สไตล์ที่กำหนด -->
+                                <button type="submit">ลบ</button>
                             </form>
                         </td>
                     </tr>
-                <% }) %>
+                    <% }) %>
             </tbody>
         </table>
 

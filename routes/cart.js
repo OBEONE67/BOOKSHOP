@@ -19,12 +19,13 @@ router.post('/', (req, res) => {
 
     const query = 'SELECT * FROM books WHERE BookID = ?';
     connection.query(query, [bookID], (err, results) => {
-        if (err) {
+        if (err) {  
             console.error(err);
             return res.render('alert', { message: 'Database error', messageType: 'error', redirectUrl: '/cart' });
         }
 
         const book = results[0];
+        console.log(book);
         if (!book) {
             return res.render('alert', { message: 'Book not found', messageType: 'error', redirectUrl: '/cart' });
         }
@@ -49,27 +50,28 @@ router.post('/', (req, res) => {
                     console.error(err);
                     return res.render('alert', { message: 'Error updating cart', messageType: 'error', redirectUrl: '/cart' });
                 }
+                res.render('alert', { message: 'Updated quantity in cart successfully!', messageType: 'success', redirectUrl: '/' });
             });
         } else {
+            console.log("old cart",req.session.cart);
             // เพิ่มหนังสือใหม่เข้าไปในตะกร้า
             req.session.cart.push({
                 BookID: book.BookID,
                 BookName: book.BookName,
                 Price: book.Price,
-                Photo: book.photo ? `/uploads/${book.photo}` : null,
+                Photo: book.photo ? `/uploads/${book.photo}` : '/uploads/?',
                 Quantity: quantity
             });
-
+            console.log("update",req.session.cart);  
             const insertQuery = 'INSERT INTO Cart (UserID, BookID, Quantity) VALUES (?, ?, ?)';
             connection.query(insertQuery, [userID, book.BookID, quantity], (err) => {
                 if (err) {
                     console.error(err);
                     return res.render('alert', { message: 'Error adding to cart', messageType: 'error', redirectUrl: '/cart' });
                 }
+                res.render('alert', { message: 'Added to cart successfully!', messageType: 'success', redirectUrl: '/' });
             });
         }
-
-        res.render('alert', { message: 'Added to cart successfully!', messageType: 'success', redirectUrl: '/' });
     });
 });
 
@@ -102,6 +104,7 @@ router.post('/remove', (req, res) => {
                         console.error(err);
                     }
                 });
+                return res.redirect('/cart'); // Redirect after updating
             } else {
                 req.session.cart.splice(itemIndex, 1);
 
@@ -111,11 +114,8 @@ router.post('/remove', (req, res) => {
                         console.error(err);
                     }
                 });
+                return res.redirect('/cart'); // Redirect after deletion
             }
-
-            req.session.save(() => {
-                res.redirect('/cart');
-            });
         } else {
             return res.status(404).send('Book not found in cart');
         }
@@ -124,6 +124,7 @@ router.post('/remove', (req, res) => {
     }
 });
 
+// POST route to check out orders
 router.post('/checkorder', (req, res) => {
     const userID = req.session.user.userid;
     const cart = req.session.cart; // ดึงข้อมูลตะกร้าสินค้า
@@ -186,7 +187,5 @@ router.post('/checkorder', (req, res) => {
             res.render('alert', { message: 'เกิดข้อผิดพลาดในการบันทึกคำสั่งซื้อ', messageType: 'error', redirectUrl: '/cart' });
         });
 });
-
-
 
 module.exports = router;

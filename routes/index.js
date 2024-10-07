@@ -66,7 +66,7 @@ router.get('/books/editbook.ejs', function(req, res, next) {
 
 /* GET cart page. */
 router.get('/cart', function(req, res, next) {
-  res.render('cart', { title: 'cart' });
+  res.render('cart', { title: 'cart', cart: req.session.cart });
 });
 
 /* GET orders page. */
