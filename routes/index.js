@@ -195,4 +195,66 @@ router.get('/payment-info', (req, res) => {
 });
 
 
+// เส้นทางสำหรับการแสดงผล Dashboard
+router.get('/dashboard', (req, res) => {
+    // ดึงข้อมูลจำนวนการสั่งซื้อทั้งหมด
+    connection.query('SELECT COUNT(*) AS totalOrders FROM orders', (error, totalOrdersResult) => {
+        if (error) {
+            console.error(error);
+            return res.status(500).send('Server Error');
+        }
+
+        const totalOrders = totalOrdersResult[0].totalOrders;
+
+        // ดึงข้อมูลจำนวนการชำระเงินทั้งหมด
+        connection.query('SELECT COUNT(*) AS totalPayments FROM payments', (error, totalPaymentsResult) => {
+            if (error) {
+                console.error(error);
+                return res.status(500).send('Server Error');
+            }
+
+            const totalPayments = totalPaymentsResult[0].totalPayments;
+
+            // ดึงข้อมูลรายได้ทั้งหมด (จากการชำระเงินทั้งหมด)
+            connection.query('SELECT SUM(Quantity) AS totalRevenue FROM payments WHERE Status = "completed"', (error, totalRevenueResult) => {
+                if (error) {
+                    console.error(error);
+                    return res.status(500).send('Server Error');
+                }
+
+                const totalRevenue = totalRevenueResult[0].totalRevenue || 0;
+
+                // ดึงรายการสั่งซื้อล่าสุด
+                connection.query('SELECT OrderID, OrderDate, Quantity, Status FROM orders ORDER BY OrderDate DESC LIMIT 5', (error, recentOrders) => {
+                    if (error) {
+                        console.error(error);
+                        return res.status(500).send('Server Error');
+                    }
+
+                    // ดึงรายการการชำระเงินล่าสุด
+                    connection.query('SELECT PaymentID, PaymentDate, PaymentMethod, Quantity, Status FROM payments ORDER BY PaymentDate DESC LIMIT 5', (error, recentPayments) => {
+                        if (error) {
+                            console.error(error);
+                            return res.status(500).send('Server Error');
+                        }
+
+                        // ส่งข้อมูลไปยัง EJS template
+                        res.render('dashboard', {
+                            totalOrders,
+                            totalPayments,
+                            totalRevenue,
+                            recentOrders,
+                            recentPayments
+                        });
+                    });
+                });
+            });
+        });
+    });
+});
+
+
+
+
+
 module.exports = router;

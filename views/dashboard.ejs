@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 40px;
+        }
+
+        .stat-box {
+            background-color: #e65c00;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            width: 30%;
+            transition: transform 0.3s;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-box h2 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        .stat-box p {
+            font-size: 1.8em;
+            margin: 10px 0 0;
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #e9f5ff;
+        }
+
+        @media (max-width: 768px) {
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stat-box {
+                width: 80%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Dashboard</h1>
+
+        <!-- กราฟยอดขายและการสั่งซื้อ -->
+        <h2>Sales and Orders Overview</h2>
+        <canvas id="salesChart" width="400" height="200"></canvas>
+
+        <!-- สถิติสำคัญ -->
+        <div class="stats">
+            <div class="stat-box">
+                <h2>Total Orders</h2>
+                <p>
+                    <%= totalOrders %>
+                </p>
+            </div>
+            <div class="stat-box">
+                <h2>Total Payments</h2>
+                <p>
+                    <%= totalPayments %>
+                </p>
+            </div>
+            <div class="stat-box">
+                <h2>Total Revenue</h2>
+                <p>฿<%= totalRevenue.toFixed(2) %>
+                </p>
+            </div>
+        </div>
+
+        <!-- รายการ Orders -->
+        <h2>Recent Orders</h2>
+        <% if (recentOrders.length> 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Order Date</th>
+                        <th>Quantity</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% recentOrders.forEach(order=> { %>
+                        <tr>
+                            <td>
+                                <%= order.OrderID %>
+                            </td>
+                            <td>
+                                <%= new Date(order.OrderDate).toLocaleDateString() %>
+                            </td>
+                            <td>
+                                <%= order.Quantity %>
+                            </td>
+                            <td>
+                                <%= order.Status %>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+            <% } else { %>
+                <p>No recent orders available.</p>
+                <% } %>
+
+                    <!-- รายการ Payments -->
+                    <h2>Recent Payments</h2>
+                    <% if (recentPayments.length> 0) { %>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Payment ID</th>
+                                    <th>Payment Date</th>
+                                    <th>Method</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% recentPayments.forEach(payment=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= payment.PaymentID %>
+                                        </td>
+                                        <td>
+                                            <%= new Date(payment.PaymentDate).toLocaleDateString() %>
+                                        </td>
+                                        <td>
+                                            <%= payment.PaymentMethod %>
+                                        </td>
+                                        <td>฿<%= payment.Quantity.toFixed(2) %>
+                                        </td>
+                                        <td>
+                                            <%= payment.Status %>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                            </tbody>
+                        </table>
+                        <% } else { %>
+                            <p>No recent payments available.</p>
+                            <% } %>
+    </div>
+
+    <script>
+        // ข้อมูลตัวอย่าง (คุณต้องปรับให้ตรงกับข้อมูลจริงของคุณ)
+        const labels = ['Orders', 'Payments', 'Revenue'];
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Recent Activity',
+                data: [<%= totalOrders %>, <%= totalPayments %>, <%= totalRevenue.toFixed(2) %>],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const config = {
+            type: 'bar', // คุณสามารถเปลี่ยนเป็น 'line', 'pie', ฯลฯ ได้
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Sales and Orders Overview'
+                    }
+                }
+            }
+        };
+
+        const salesChart = new Chart(
+            document.getElementById('salesChart'),
+            config
+        );
+    </script>
+</body>
+
+</html>
